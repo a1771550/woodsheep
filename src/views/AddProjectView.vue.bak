@@ -1,0 +1,79 @@
+<template>
+  <div class="add-project-view">
+    <h2>添加新项目</h2>
+    <form @submit.prevent="addProject" class="project-form">
+      <div class="form-group">
+        <label for="name">项目名称:</label>
+        <input v-model="newProject.name" id="name" type="text" required />
+      </div>
+      <div class="form-group">
+        <label for="city">城市:</label>
+        <select v-model="newProject.city" id="city" required>
+          <option value="" disabled>请选择城市</option>
+          <option value="珠海">珠海</option>
+          <option value="中山">中山</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="size">规模:</label>
+        <input v-model="newProject.size" id="size" type="text" required />
+      </div>
+      <div class="form-group">
+        <label for="price">价格:</label>
+        <input v-model="newProject.price" id="price" type="text" required />
+      </div>
+      <div class="form-group">
+        <label for="contact">联系人:</label>
+        <input v-model="newProject.contact" id="contact" type="text" required />
+      </div>
+      <div class="form-group">
+        <label for="status">状态:</label>
+        <select v-model="newProject.status" id="status" required>
+          <option value="" disabled>请选择状态</option>
+          <option value="待跟进">待跟进</option>
+          <option value="跟进中">跟进中</option>
+          <option value="已推荐">已推荐</option>
+          <option value="已成交">已成交</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="tags">标签 (逗号分隔):</label>
+        <input v-model="tagsInput" id="tags" type="text" />
+      </div>
+      <button type="submit" class="btn-submit">添加项目</button>
+    </form>
+  </div>
+</template>
+<script setup>
+import { ref } from 'vue'
+import { useProjectStore } from '@/stores/projectStore'
+import { useRouter } from 'vue-router'
+
+const store = useProjectStore()
+const router = useRouter()
+
+const newProject = ref({
+  name: '',
+  city: '',
+  size: '',
+  price: '',
+  contact: '',
+  status: '',
+})
+
+const tagsInput = ref('')
+
+const addProject = () => {
+  const project = {
+    ...newProject.value,
+    tags: tagsInput.value
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter((tag) => tag !== ''),
+    createdAt: new Date().toISOString(),
+  }
+  store.addProject(project)
+  router.push('/projects')
+}
+</script>
+<style lang="scss"></style>
