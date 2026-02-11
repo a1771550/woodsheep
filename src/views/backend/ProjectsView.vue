@@ -1,5 +1,5 @@
 <template>
-  <div class="projects-view">
+  <div class="properties-view">
     <div class="page-header">
       <h2>项目管理</h2>
       <div class="controls">
@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <div class="projects-grid">
+    <div class="properties-grid">
       <div v-for="project in filteredProjects" :key="project.id" class="project-card">
         <div class="card-header">
           <h3>{{ project.name }}</h3>
@@ -51,16 +51,9 @@
               删除
             </button>
             <!-- 确认对话框 -->
-            <ConfirmDialog
-              v-if="showDeleteConfirm"
-              title="删除确认"
-              :message="`确定要删除 '${projectToDeleteName}' 吗？此操作不可撤销。`"
-              confirmText="删除"
-              cancelText="取消"
-              :visible="showDeleteConfirm"
-              @confirm="executeDelete"
-              @cancel="closeDeleteConfirm"
-            />
+            <ConfirmDialog v-if="showDeleteConfirm" title="删除确认" :message="`确定要删除 '${projectToDeleteName}' 吗？此操作不可撤销。`"
+              confirmText="删除" cancelText="取消" :visible="showDeleteConfirm" @confirm="executeDelete"
+              @cancel="closeDeleteConfirm" />
           </div>
           <div class="card-meta">
             <small>ID: {{ project.id }}</small>
@@ -77,11 +70,11 @@
 </template>
 
 <script setup>
-import { useProjectStore } from '@/stores/projectStore'
+import { usePropertyStore } from '@/stores/propertyStore'
 import { computed, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
-const store = useProjectStore()
+const store = usePropertyStore()
 const router = useRouter()
 
 const searchQuery = ref('')
@@ -89,7 +82,7 @@ const filterCity = ref('')
 const filterStatus = ref('')
 
 const filteredProjects = computed(() => {
-  return store.projects.filter((project) => {
+  return store.properties.filter((project) => {
     // 搜索过滤
     const matchesSearch =
       searchQuery.value === '' ||
@@ -113,7 +106,7 @@ function editProject(project) {
 }
 
 const emit = defineEmits(['delete'])
-import ConfirmDialog from '@/components/ConfirmDialog.vue'
+import ConfirmDialog from '@/components/backend/ConfirmDialog.vue'
 
 // 状态管理
 const showDeleteConfirm = ref(false)
@@ -153,7 +146,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.projects-view {
+.properties-view {
   padding: 20px;
 }
 
@@ -181,7 +174,7 @@ onMounted(() => {
   min-width: 200px;
 }
 
-.projects-grid {
+.properties-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 25px;
@@ -256,8 +249,10 @@ onMounted(() => {
   border-top: 1px solid #eee;
   display: flex;
   /* justify-content: space-between; */
-  flex-wrap: wrap; /* 允许在小屏幕上换行 */
-  gap: 10px; /* 替代 margin */
+  flex-wrap: wrap;
+  /* 允许在小屏幕上换行 */
+  gap: 10px;
+  /* 替代 margin */
   align-items: center;
   /* 关键：使 footer 保持在卡片底部 */
   margin-top: auto;

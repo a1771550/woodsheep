@@ -13,15 +13,8 @@
             项目名称
             <span class="required-mark">*</span>
           </label>
-          <input
-            v-model="formData.name"
-            id="name"
-            type="text"
-            placeholder="例如：盛东·江山赋"
-            required
-            class="form-input"
-            :class="{ 'input-error': !formData.name && submitted }"
-          />
+          <input v-model="formData.name" id="name" type="text" placeholder="例如：盛东·江山赋" required class="form-input"
+            :class="{ 'input-error': !formData.name && submitted }" />
           <div v-if="!formData.name && submitted" class="error-message">项目名称不能为空</div>
         </div>
 
@@ -30,13 +23,8 @@
             所在城市
             <span class="required-mark">*</span>
           </label>
-          <select
-            v-model="formData.city"
-            id="city"
-            required
-            class="form-select"
-            :class="{ 'input-error': !formData.city && submitted }"
-          >
+          <select v-model="formData.city" id="city" required class="form-select"
+            :class="{ 'input-error': !formData.city && submitted }">
             <option value="" disabled>请选择城市</option>
             <option value="珠海">珠海</option>
             <option value="中山">中山</option>
@@ -51,24 +39,12 @@
       <div class="form-row">
         <div class="form-group">
           <label for="size">户型/规模</label>
-          <input
-            v-model="formData.size"
-            id="size"
-            type="text"
-            placeholder="例如：约155-325㎡"
-            class="form-input"
-          />
+          <input v-model="formData.size" id="size" type="text" placeholder="例如：约155-325㎡" class="form-input" />
         </div>
 
         <div class="form-group">
           <label for="price">价格参考</label>
-          <input
-            v-model="formData.price"
-            id="price"
-            type="text"
-            placeholder="例如：65万起"
-            class="form-input"
-          />
+          <input v-model="formData.price" id="price" type="text" placeholder="例如：65万起" class="form-input" />
         </div>
       </div>
 
@@ -76,13 +52,7 @@
       <div class="form-row">
         <div class="form-group">
           <label for="contact">联系人</label>
-          <input
-            v-model="formData.contact"
-            id="contact"
-            type="text"
-            placeholder="例如：FBB 姚泽璇"
-            class="form-input"
-          />
+          <input v-model="formData.contact" id="contact" type="text" placeholder="例如：FBB 姚泽璇" class="form-input" />
         </div>
 
         <div class="form-group">
@@ -90,13 +60,8 @@
             项目状态
             <span class="required-mark">*</span>
           </label>
-          <select
-            v-model="formData.status"
-            id="status"
-            required
-            class="form-select"
-            :class="{ 'input-error': !formData.status && submitted }"
-          >
+          <select v-model="formData.status" id="status" required class="form-select"
+            :class="{ 'input-error': !formData.status && submitted }">
             <option value="" disabled>请选择状态</option>
             <option value="待跟进">待跟进</option>
             <option value="跟进中">跟进中</option>
@@ -125,13 +90,7 @@
           核心卖点标签
           <small class="hint-text">（用逗号分隔多个标签）</small>
         </label>
-        <input
-          v-model="tagsInput"
-          id="tags"
-          type="text"
-          placeholder="例如：海景房, 学区房, 地铁口, 低密度"
-          class="form-input"
-        />
+        <input v-model="tagsInput" id="tags" type="text" placeholder="例如：海景房, 学区房, 地铁口, 低密度" class="form-input" />
         <div class="tag-preview" v-if="parsedTags.length > 0">
           <span v-for="tag in parsedTags" :key="tag" class="tag">
             {{ tag }}
@@ -164,11 +123,11 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useProjectStore } from '@/stores/projectStore'
+import { usePropertyStore } from '@/stores/propertyStore'
 
 const route = useRoute()
 const router = useRouter()
-const store = useProjectStore()
+const store = usePropertyStore()
 
 // 状态管理
 const isEditing = computed(() => route.name === 'edit')
@@ -227,7 +186,7 @@ const loadProjectForEdit = () => {
     }
   } else {
     alert('找不到指定的项目')
-    router.push('/projects')
+    router.push('/properties')
   }
 }
 
@@ -285,7 +244,7 @@ const handleSubmit = async () => {
     showSuccessMessage.value = true
     setTimeout(() => {
       showSuccessMessage.value = false
-      router.push('/projects')
+      router.push('/properties')
     }, 1500)
   } catch (error) {
     console.error('操作失败:', error)
@@ -297,7 +256,7 @@ const handleSubmit = async () => {
 
 const cancelForm = () => {
   if (confirm('确定要取消吗？未保存的数据将会丢失。')) {
-    router.push('/projects')
+    router.push('/properties')
   }
 }
 
@@ -329,6 +288,7 @@ const resetForm = () => {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -416,6 +376,7 @@ const resetForm = () => {
 .form-input {
   width: 90%;
 }
+
 .form-select {
   width: 99%;
 }
@@ -556,6 +517,7 @@ const resetForm = () => {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -582,6 +544,7 @@ const resetForm = () => {
     opacity: 0;
     transform: translateX(100%);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);

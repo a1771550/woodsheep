@@ -46,10 +46,10 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import { useProjectStore } from '@/stores/projectStore'
+import { usePropertyStore } from '@/stores/propertyStore'
 import { useRouter } from 'vue-router'
 
-const store = useProjectStore()
+const store = usePropertyStore()
 const router = useRouter()
 
 const newProject = ref({
@@ -73,7 +73,7 @@ const addProject = () => {
     createdAt: new Date().toISOString(),
   }
   store.addProject(project)
-  router.push('/projects')
+  router.push('/properties')
 }
 </script>
 <style lang="scss"></style>

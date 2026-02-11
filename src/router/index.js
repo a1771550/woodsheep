@@ -1,30 +1,47 @@
+// src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+
+const routes = [
+  // 后台路由
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('@/views/backend/ProjectsView.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/admin/add',
+    name: 'AddProject',
+    component: () => import('@/views/backend/ProjectFormView.vue'),
+  },
+  {
+    path: '/admin/edit/:id',
+    name: 'EditProject',
+    component: () => import('@/views/backend/ProjectFormView.vue'),
+    props: true,
+  },
+
+  // 前台路由
+  {
+    path: '/woodsheep',
+    name: 'Home',
+    component: () => import('@/views/frontend/HomeView.vue'),
+  },
+  {
+    path: '/properties',
+    name: 'Properties',
+    component: () => import('@/views/frontend/PropertyDisplay.vue'),
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: () => import('@/views/frontend/AboutView.vue'),
+  },
+]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView,
-    },
-    {
-      path: '/projects',
-      name: 'projects',
-      component: () => import('../views/ProjectsView.vue'),
-    },
-    {
-      path: '/add',
-      name: 'add',
-      component: () => import('../views/ProjectFormView.vue'),
-    },
-    {
-      path: '/edit/:id',
-      name: 'edit',
-      component: () => import('../views/ProjectFormView.vue'),
-    },
-  ],
+  history: createWebHistory(),
+  routes,
 })
 
 export default router

@@ -1,17 +1,14 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
+import { createPinia } from 'pinia'
 
-// 如果使用Element Plus
-// import ElementPlus from 'element-plus'
-// import 'element-plus/dist/index.css'
+// 导入全局样式 (关键修改)
+import '@/assets/styles/main.css'
 
 const app = createApp(App)
-const pinia = createPinia()
 
-app.use(pinia)
+app.use(createPinia())
 app.use(router)
-// app.use(ElementPlus)
 
 app.mount('#app')
