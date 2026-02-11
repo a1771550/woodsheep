@@ -36,7 +36,7 @@ export default {
     const route = useRoute()
 
     const isBackendRoute = computed(() => {
-      return route.path.startsWith('/admin')
+      return route.path.startsWith('/woodsheep/admin')
     })
 
     return {

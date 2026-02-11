@@ -141,7 +141,9 @@ function goToAdd() {
 }
 
 onMounted(() => {
-  store.loadFromLocalStorage()
+  console.log('ProjectsView mounted, loading properties from localStorage...')
+  store.fetchProperties()
+  console.log('Loaded properties:', store.properties)
 })
 </script>
 

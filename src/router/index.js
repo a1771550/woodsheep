@@ -4,18 +4,18 @@ import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
   // 后台路由
   {
-    path: '/admin',
+    path: '/woodsheep/admin',
     name: 'Admin',
     component: () => import('@/views/backend/ProjectsView.vue'),
     meta: { requiresAuth: true },
   },
   {
-    path: '/admin/add',
+    path: '/woodsheep/admin/add',
     name: 'AddProject',
     component: () => import('@/views/backend/ProjectFormView.vue'),
   },
   {
-    path: '/admin/edit/:id',
+    path: '/woodsheep/admin/edit/:id',
     name: 'EditProject',
     component: () => import('@/views/backend/ProjectFormView.vue'),
     props: true,
