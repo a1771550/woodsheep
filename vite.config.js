@@ -14,7 +14,7 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  base: '/woodsheep/',
+  base: '/woodsheep/', // ← BASE_URL 會自動等於這個值
   build: {
     // 确保构建输出结构清晰
     outDir: 'dist',

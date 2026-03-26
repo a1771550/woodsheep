@@ -13,8 +13,12 @@
 
         <!-- 桌面导航 -->
         <nav class="desktop-nav">
-          <router-link to="/woodsheep" class="nav-link" exact-active-class="active">首页</router-link>
-          <router-link to="/properties" class="nav-link" active-class="active">楼盘展示</router-link>
+          <router-link to="/woodsheep" class="nav-link" exact-active-class="active"
+            >首页</router-link
+          >
+          <router-link to="/properties" class="nav-link" active-class="active"
+            >楼盘展示</router-link
+          >
           <router-link to="/about" class="nav-link" active-class="active">关于我们</router-link>
           <router-link to="/contact" class="nav-link" active-class="active">联系我们</router-link>
         </nav>
@@ -39,10 +43,18 @@
       <!-- 移动端导航菜单 -->
       <transition name="slide">
         <div v-if="showMobileMenu" class="mobile-nav">
-          <router-link to="/woodsheep" class="mobile-nav-link" @click="closeMobileMenu">首页</router-link>
-          <router-link to="/properties" class="mobile-nav-link" @click="closeMobileMenu">楼盘展示</router-link>
-          <router-link to="/about" class="mobile-nav-link" @click="closeMobileMenu">关于我们</router-link>
-          <router-link to="/contact" class="mobile-nav-link" @click="closeMobileMenu">联系我们</router-link>
+          <router-link to="/woodsheep" class="mobile-nav-link" @click="closeMobileMenu"
+            >首页</router-link
+          >
+          <router-link to="/properties" class="mobile-nav-link" @click="closeMobileMenu"
+            >楼盘展示</router-link
+          >
+          <router-link to="/about" class="mobile-nav-link" @click="closeMobileMenu"
+            >关于我们</router-link
+          >
+          <router-link to="/contact" class="mobile-nav-link" @click="closeMobileMenu"
+            >联系我们</router-link
+          >
           <div class="mobile-contact">
             <span class="mobile-phone-label">咨询热线</span>
             <a href="tel:0756-xxxxxxx" class="mobile-phone-value">0756-xxxxxxx</a>
@@ -62,7 +74,7 @@ const navItems = [
   { path: '/woodsheep', name: '首页' },
   { path: '/properties', name: '楼盘展示' },
   { path: '/about', name: '关于我们' },
-  { path: '/contact', name: '联系我们' }
+  { path: '/contact', name: '联系我们' },
 ]
 
 const toggleMobileMenu = () => {
@@ -219,6 +231,9 @@ const closeMobileMenu = () => {
   border: none;
   cursor: pointer;
   padding: 10px;
+  position: relative; /* 確保按鈕是相對定位的參考點 */
+  width: 44px; /* 固定按鈕寬度 */
+  height: 44px; /* 固定按鈕高度 */
 }
 
 .hamburger {
@@ -226,7 +241,11 @@ const closeMobileMenu = () => {
   width: 24px;
   height: 2px;
   background: #333;
-  position: relative;
+  position: absolute; /* 改為絕對定位，相對於按鈕 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
 }
 
 .hamburger::before,
@@ -237,14 +256,15 @@ const closeMobileMenu = () => {
   height: 2px;
   background: #333;
   transition: all 0.3s;
+  left: 0; /* 確保與中間橫線左對齊 */
 }
 
 .hamburger::before {
-  top: -6px;
+  top: -8px; /* 向上偏移 8px */
 }
 
 .hamburger::after {
-  bottom: -6px;
+  bottom: -8px; /* 向下偏移 8px */
 }
 
 /* 移动端导航菜单 */
@@ -263,6 +283,7 @@ const closeMobileMenu = () => {
   font-size: 16px;
   padding: 10px 0;
   border-bottom: 1px solid #f0f0f0;
+  text-align: center; /* ✅ 添加這行 */
 }
 
 .mobile-nav-link:last-child {

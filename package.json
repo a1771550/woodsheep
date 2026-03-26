@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist --repo https://github.com/a1771550/woodsheep.git"
+    "deploy": "gh-pages -d dist --repo https://github.com/a1771550/woodsheep.git",
+    "deploy:bat": "deploy.bat"
   },
   "keywords": [],
   "author": "Kevin Lau",

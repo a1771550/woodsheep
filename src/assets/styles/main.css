@@ -1,16 +1,13 @@
+@import './_variables.css';
+@import './_reset.css';
+@import './_utilities.css';
 /* ========================================
    Main CSS Entry
    ======================================== */
 
-/* Import order matters! */
-@import './_variables.css';
-@import './_reset.css';
-@import './_utilities.css';
-
 /* ========================================
    Global Component Styles
    ======================================== */
-
 /* 木羊物业品牌 Logo 样式 */
 .woodsheep-logo-text {
   font-family: var(--font-family-logo);
@@ -132,19 +129,16 @@
 .slide-leave-to {
   transform: translateY(20px);
   opacity: 0;
-} /* ========================================
+}
+
+
+/* ========================================
    Main CSS Entry
    ======================================== */
-
-/* Import order matters! */
-@import './_variables.css';
-@import './_reset.css';
-@import './_utilities.css';
 
 /* ========================================
    Global Component Styles
    ======================================== */
-
 /* 木羊物业品牌 Logo 样式 */
 .woodsheep-logo-text {
   font-family: var(--font-family-logo);
