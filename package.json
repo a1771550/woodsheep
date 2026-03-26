@@ -9,8 +9,9 @@
     "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist --repo https://github.com/a1771550/woodsheep.git",
-    "deploy:bat": "deploy.bat"
+    "build:vercel": "vite build --config vite.config.vercel.js",
+    "vercel:prepare": "node pre-deploy-vercel.js",
+    "deploy:vercel": "npm run build:vercel && npm run vercel:prepare && vercel --prod --cwd vercel-dist"
   },
   "keywords": [],
   "author": "Kevin Lau",

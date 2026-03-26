@@ -1,9 +1,11 @@
 {
-  "routes": [
+  "builds": [
     {
-      "src": "/admin.*",
-      "dest": "/index.html"
-    },
+      "src": "**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
     {
       "src": "/(.*)",
       "dest": "/index.html"
