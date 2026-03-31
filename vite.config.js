@@ -1,14 +1,16 @@
 import { fileURLToPath, URL } from 'node:url'
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  // 從 process.env 讀取環境變數（GitHub Actions 會注入）
-  const supabaseUrl = process.env.VITE_SUPABASE_URL
-  const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY
+  // ✅ 使用 loadEnv 從 .env.local 載入環境變數
+  const env = loadEnv(mode, process.cwd(), '')
 
-  // 調試輸出（在 GitHub Actions 日誌中可見）
+  const supabaseUrl = env.VITE_SUPABASE_URL
+  const supabaseKey = env.VITE_SUPABASE_ANON_KEY
+
+  // 調試輸出
   console.log('🔧 建置模式:', mode)
   console.log('🔑 VITE_SUPABASE_URL 存在:', !!supabaseUrl)
   console.log('🔑 VITE_SUPABASE_ANON_KEY 存在:', !!supabaseKey)
