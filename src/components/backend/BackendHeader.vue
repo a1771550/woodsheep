@@ -103,9 +103,9 @@ export default {
       showMobileMenu,
       toggleMobileMenu,
       closeMobileMenu,
-      handleLogout
+      handleLogout,
     }
-  }
+  },
 }
 </script>
 
@@ -261,104 +261,6 @@ export default {
 
 .logout-icon {
   font-size: 18px;
-}
-
-/* 移动端菜单按钮 */
-.mobile-menu-btn {
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 10px;
-}
-
-.hamburger {
-  display: block;
-  width: 24px;
-  height: 2px;
-  background: #333;
-  position: relative;
-}
-
-.hamburger::before,
-.hamburger::after {
-  content: '';
-  position: absolute;
-  width: 24px;
-  height: 2px;
-  background: #333;
-  transition: all 0.3s;
-}
-
-.hamburger::before {
-  top: -6px;
-}
-
-.hamburger::after {
-  bottom: -6px;
-}
-
-/* 移动端导航 */
-.mobile-nav {
-  display: none;
-  flex-direction: column;
-  padding: 20px;
-  background: white;
-  border-top: 1px solid #eee;
-}
-
-.mobile-nav-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 15px 0;
-  text-decoration: none;
-  color: #333;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.mobile-nav-item:last-child {
-  border-bottom: none;
-}
-
-.mobile-nav-item.active {
-  color: #2c8bff;
-  font-weight: 500;
-}
-
-.mobile-divider {
-  height: 1px;
-  background: #eee;
-  margin: 15px 0;
-}
-
-.mobile-user {
-  padding: 10px 0;
-  color: #6c757d;
-}
-
-.mobile-logout-btn {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 15px 0;
-  background: none;
-  border: none;
-  color: #dc3545;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-/* 移动端动画 */
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.3s ease;
-}
-
-.slide-enter-from,
-.slide-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
 }
 
 /* 响应式 */

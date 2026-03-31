@@ -21,5 +21,11 @@ export default defineConfig({
     assetsDir: 'assets', // 资源文件会输出到 dist/assets/
     // 清理旧构建（Windows 兼容）
     emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        // 確保輸出的檔案使用 UTF-8
+        banner: '/*! UTF-8 */',
+      },
+    },
   },
 })

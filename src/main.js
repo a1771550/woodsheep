@@ -5,6 +5,7 @@ import { createPinia } from 'pinia'
 
 // 导入全局样式 (关键修改)
 import '@/assets/styles/main.css'
+import '@/assets/styles/header.css'
 
 const app = createApp(App)
 

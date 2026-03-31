@@ -24,25 +24,32 @@ import { useRoute } from 'vue-router'
 import BackendHeader from '@/components/backend/BackendHeader.vue'
 import FrontendHeader from '@/components/frontend/FrontendHeader.vue'
 import FrontendFooter from '@/components/frontend/FrontendFooter.vue'
+import { onMounted } from 'vue'
+import { usePropertyStore } from '@/stores/propertyStore'
 
 export default {
   name: 'App',
   components: {
     BackendHeader,
     FrontendHeader,
-    FrontendFooter
+    FrontendFooter,
   },
   setup() {
+    const propertyStore = usePropertyStore()
     const route = useRoute()
-
     const isBackendRoute = computed(() => {
-      return route.path.startsWith('/woodsheep/admin')
+      console.log('当前路由路径:', route.path) // 调试输出当前路由路径
+      return route.path.startsWith('/admin')
+    })
+
+    onMounted(() => {
+      propertyStore.fetchProperties()
     })
 
     return {
-      isBackendRoute
+      isBackendRoute,
     }
-  }
+  },
 }
 </script>
 

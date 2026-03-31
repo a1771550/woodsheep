@@ -1,0 +1,106 @@
+/* ========================================
+   共用 Header 移動端樣式
+   ======================================== */
+
+/* 移动端菜单按钮 */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  position: relative;
+  width: 44px;
+  height: 44px;
+}
+
+.hamburger {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #333;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+}
+
+.hamburger::before,
+.hamburger::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 2px;
+  background: #333;
+  transition: all 0.3s;
+  left: 0;
+}
+
+.hamburger::before {
+  top: -8px;
+}
+
+.hamburger::after {
+  bottom: -8px;
+}
+
+/* 移动端导航菜单 */
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px 0;
+  border-top: 1px solid #eee;
+  margin-top: 15px;
+}
+
+.mobile-nav-link {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+  text-align: center;
+}
+
+.mobile-nav-link:last-child {
+  border-bottom: none;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link.active {
+  color: #2c8bff;
+}
+
+.mobile-contact {
+  padding: 15px 0;
+  border-top: 1px solid #eee;
+  text-align: center;
+}
+
+.mobile-phone-label {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.mobile-phone-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c8bff;
+  text-decoration: none;
+}
+
+/* 移动端动画 */
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}

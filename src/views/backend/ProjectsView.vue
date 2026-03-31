@@ -36,6 +36,7 @@
               {{ project.status }}
             </span>
           </p>
+          <p><strong>信息来源:</strong> {{ project.source }}</p>
 
           <div class="tags" v-if="project.tags.length > 0">
             <span v-for="tag in project.tags" :key="tag" class="tag">
@@ -51,9 +52,16 @@
               删除
             </button>
             <!-- 确认对话框 -->
-            <ConfirmDialog v-if="showDeleteConfirm" title="删除确认" :message="`确定要删除 '${projectToDeleteName}' 吗？此操作不可撤销。`"
-              confirmText="删除" cancelText="取消" :visible="showDeleteConfirm" @confirm="executeDelete"
-              @cancel="closeDeleteConfirm" />
+            <ConfirmDialog
+              v-if="showDeleteConfirm"
+              title="删除确认"
+              :message="`确定要删除 '${projectToDeleteName}' 吗？此操作不可撤销。`"
+              confirmText="删除"
+              cancelText="取消"
+              :visible="showDeleteConfirm"
+              @confirm="executeDelete"
+              @cancel="closeDeleteConfirm"
+            />
           </div>
           <div class="card-meta">
             <small>ID: {{ project.id }}</small>
@@ -62,10 +70,10 @@
       </div>
     </div>
 
-    <div v-if="filteredProjects.length === 0" class="empty-state">
-      <p>暂无项目数据，请添加新项目。</p>
-      <button @click="goToAdd" class="btn-primary">添加第一个项目</button>
-    </div>
+    <!-- <div v-if="filteredProjects.length === 0" class="empty-state">
+      <p>暂无项目数据，请添加新项目。</p> -->
+    <button @click="goToAdd" class="btn-primary">添加项目</button>
+    <!-- </div> -->
   </div>
 </template>
 
@@ -99,10 +107,7 @@ const filteredProjects = computed(() => {
 })
 
 function editProject(project) {
-  // 这里可以跳转到编辑页面或打开模态框
-  // alert(`编辑项目: ${project.name}`)
-  // 实际实现时：
-  router.push(`/edit/${project.id}`)
+  router.push(`/admin/edit/${project.id}`)
 }
 
 const emit = defineEmits(['delete'])
@@ -137,7 +142,7 @@ const executeDelete = () => {
 }
 
 function goToAdd() {
-  router.push('/add')
+  router.push('/admin/add')
 }
 
 onMounted(() => {
@@ -315,5 +320,30 @@ onMounted(() => {
 
 .btn-primary:hover {
   background: #0066cc;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  background: rgba(255, 193, 7, 0.9);
+  color: #333;
+  margin-left: 4px;
+}
+
+.status-badge.在售 {
+  background: rgba(40, 167, 69, 0.9);
+  color: white;
+}
+
+.status-badge.待跟进 {
+  background: rgba(255, 193, 7, 0.9);
+  color: #333;
+}
+
+.status-badge.已成交 {
+  background: rgba(108, 117, 125, 0.9);
+  color: white;
 }
 </style>

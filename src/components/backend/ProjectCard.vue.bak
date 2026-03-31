@@ -1,10 +1,14 @@
 <template>
   <div class="property-card" @click="handleClick">
     <div class="card-image">
-      <img v-if="property.images && property.images.length > 0" :src="property.images[0]" :alt="property.name" />
+      <img
+        v-if="property.images && property.images.length > 0"
+        :src="property.images[0]"
+        :alt="property.name"
+      />
       <!-- Add a default placeholder -->
       <div v-else class="no-image">
-        <img :src="images.defaultProperty" alt="暂无图片">
+        <img :src="images.defaultProperty" alt="暂无图片" />
       </div>
       <div class="card-badges">
         <span class="city-badge">{{ property.city }}</span>
@@ -53,8 +57,8 @@ import { useRouter } from 'vue-router'
 const props = defineProps({
   property: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const emit = defineEmits(['click'])
@@ -81,7 +85,9 @@ const viewDetail = (e) => {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
   cursor: pointer;
   height: 100%;
   display: flex;

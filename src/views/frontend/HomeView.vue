@@ -7,8 +7,13 @@
       <div class="carousel-container">
         <!-- 轮播图片 -->
         <transition-group name="fade" tag="div" class="carousel-images">
-          <div v-for="(slide, index) in heroSlides" :key="slide.id" v-show="currentSlide === index"
-            class="carousel-slide" :style="{ backgroundImage: `url(${siteConfig.asset(slide.image)})` }">
+          <div
+            v-for="(slide, index) in heroSlides"
+            :key="slide.id"
+            v-show="currentSlide === index"
+            class="carousel-slide"
+            :style="{ backgroundImage: `url(${siteConfig.asset(slide.image)})` }"
+          >
             <div class="carousel-overlay"></div>
             <div class="carousel-content">
               <span class="slide-tag">{{ slide.tag }}</span>
@@ -28,8 +33,12 @@
 
         <!-- 轮播指示器 -->
         <div class="carousel-indicators">
-          <button v-for="(slide, index) in heroSlides" :key="index"
-            :class="['indicator', { active: currentSlide === index }]" @click="currentSlide = index"></button>
+          <button
+            v-for="(slide, index) in heroSlides"
+            :key="index"
+            :class="['indicator', { active: currentSlide === index }]"
+            @click="currentSlide = index"
+          ></button>
         </div>
 
         <!-- 前后导航 -->
@@ -45,8 +54,12 @@
       <div class="container">
         <div class="filter-card">
           <div class="filter-tabs">
-            <button v-for="tab in filterTabs" :key="tab.value"
-              :class="['filter-tab', { active: activeFilterTab === tab.value }]" @click="activeFilterTab = tab.value">
+            <button
+              v-for="tab in filterTabs"
+              :key="tab.value"
+              :class="['filter-tab', { active: activeFilterTab === tab.value }]"
+              @click="activeFilterTab = tab.value"
+            >
               {{ tab.label }}
             </button>
           </div>
@@ -75,9 +88,7 @@
                 <option value="150+">150㎡以上</option>
               </select>
 
-              <button class="btn btn-primary btn-filter" @click="applyFilters">
-                搜索房源
-              </button>
+              <button class="btn btn-primary btn-filter" @click="applyFilters">搜索房源</button>
             </div>
           </div>
         </div>
@@ -135,8 +146,12 @@
         </div>
 
         <div v-else class="property-grid">
-          <PropertyCard v-for="property in featuredProperties" :key="property.id" :property="property"
-            @click="viewProperty(property)" />
+          <PropertyCard
+            v-for="property in featuredProperties"
+            :key="property.id"
+            :property="property"
+            @click="viewProperty(property)"
+          />
         </div>
       </div>
     </section>
@@ -150,8 +165,16 @@
         <p class="section-subtitle">探索珠海、中山核心板块</p>
 
         <div class="cities-grid">
-          <div v-for="city in hotCities" :key="city.name" class="city-card" @click="filterByCity(city.name)">
-            <div class="city-image" :style="{ backgroundImage: `url(${siteConfig.asset(city.image)})` }">
+          <div
+            v-for="city in hotCities"
+            :key="city.name"
+            class="city-card"
+            @click="filterByCity(city.name)"
+          >
+            <div
+              class="city-image"
+              :style="{ backgroundImage: `url(${siteConfig.asset(city.image)})` }"
+            >
               <div class="city-overlay"></div>
               <div class="city-info">
                 <h3 class="city-name">{{ city.name }}</h3>
@@ -216,7 +239,7 @@
         <div class="news-grid">
           <article v-for="news in latestNews" :key="news.id" class="news-card">
             <div class="news-image">
-              <img :src="siteConfig.asset(news.image)" :alt="news.title">
+              <img :src="siteConfig.asset(news.image)" :alt="news.title" />
             </div>
             <div class="news-content">
               <span class="news-date">{{ news.date }}</span>
@@ -253,7 +276,7 @@ const heroSlides = [
     title: '盛东·江山赋',
     subtitle: '山海湖园藏品级资产 | 约155-325㎡主城云顶大宅',
     ctaText: '查看详情',
-    ctaLink: '/properties/1'
+    ctaLink: '/properties/1',
   },
   {
     id: 2,
@@ -262,7 +285,7 @@ const heroSlides = [
     title: '遠洋繁花里',
     subtitle: '香港直通车社区 | 天天發車 直達太子荃灣',
     ctaText: '查看详情',
-    ctaLink: '/properties/4'
+    ctaLink: '/properties/4',
   },
   {
     id: 3,
@@ -271,8 +294,8 @@ const heroSlides = [
     title: '华发·云玺',
     subtitle: '约50万㎡港湾生活社区 | 一线半山海景奢宅',
     ctaText: '查看详情',
-    ctaLink: '/properties/2'
-  }
+    ctaLink: '/properties/2',
+  },
 ]
 
 const currentSlide = ref(0)
@@ -305,20 +328,20 @@ const stopAutoPlay = () => {
 const filterTabs = [
   { label: '买新房', value: 'buy' },
   { label: '买二手房', value: 'resale' },
-  { label: '租房', value: 'rent' }
+  { label: '租房', value: 'rent' },
 ]
 const activeFilterTab = ref('buy')
 
 const filters = reactive({
   city: '',
   price: '',
-  area: ''
+  area: '',
 })
 
 const applyFilters = () => {
   router.push({
     path: '/properties',
-    query: { ...filters }
+    query: { ...filters },
   })
 }
 
@@ -337,24 +360,24 @@ const totalAgents = ref(10) // 示例数据
 const hotCities = computed(() => [
   {
     name: '珠海',
-    count: propertyStore.properties?.filter(p => p.city === '珠海').length || 0,
-    image: 'images/cities/zhuhai.jpg'
+    count: propertyStore.properties?.filter((p) => p.city === '珠海').length || 0,
+    image: 'images/cities/zhuhai.jpg',
   },
   {
     name: '中山',
-    count: propertyStore.properties?.filter(p => p.city === '中山').length || 0,
-    image: 'images/cities/zhongshan.jpg'
+    count: propertyStore.properties?.filter((p) => p.city === '中山').length || 0,
+    image: 'images/cities/zhongshan.jpg',
   },
   {
     name: '横琴',
     count: 3,
-    image: 'images/cities/hengqin.jpg'
+    image: 'images/cities/hengqin.jpg',
   },
   {
     name: '坦洲',
     count: 2,
-    image: 'images/cities/tanzhou.jpg'
-  }
+    image: 'images/cities/tanzhou.jpg',
+  },
 ])
 
 // ========================================
@@ -374,7 +397,7 @@ const serviceSteps = [
   { icon: '👀', title: '实地看房', desc: '专车接送，全程陪同' },
   { icon: '📝', title: '签约交易', desc: '律师把关，透明交易' },
   { icon: '🔑', title: '验房交楼', desc: '专业验房，安心收楼' },
-  { icon: '🎉', title: '售后服务', desc: '入住后持续跟进' }
+  { icon: '🎉', title: '售后服务', desc: '入住后持续跟进' },
 ]
 
 // ========================================
@@ -384,7 +407,7 @@ const brandPromises = [
   { icon: '🛡️', title: '真房源', desc: '100%真实楼盘信息' },
   { icon: '💰', title: '无差价', desc: '交易价格透明公开' },
   { icon: '⚖️', title: '律师监管', desc: '专业律师全程跟进' },
-  { icon: '⭐', title: '五星服务', desc: '客户满意度98%' }
+  { icon: '⭐', title: '五星服务', desc: '客户满意度98%' },
 ]
 
 // ========================================
@@ -397,7 +420,7 @@ const latestNews = [
     excerpt: '深中通道通车在即，中山楼盘咨询量上涨50%...',
     date: '2026-02-10',
     image: 'images/news/shenzhong.jpg',
-    link: '/news/1'
+    link: '/news/1',
   },
   {
     id: 2,
@@ -405,7 +428,7 @@ const latestNews = [
     excerpt: '企业所得税优惠、人才引进政策全面升级...',
     date: '2026-02-08',
     image: 'images/news/hengqin.jpg',
-    link: '/news/2'
+    link: '/news/2',
   },
   {
     id: 3,
@@ -413,8 +436,8 @@ const latestNews = [
     excerpt: '通关后首个香港购房考察团到访...',
     date: '2026-02-05',
     image: 'images/news/hongkong.jpg',
-    link: '/news/3'
-  }
+    link: '/news/3',
+  },
 ]
 
 // ========================================
@@ -436,7 +459,7 @@ onUnmounted(() => {
 const filterByCity = (city) => {
   router.push({
     path: '/properties',
-    query: { city }
+    query: { city },
   })
 }
 
@@ -498,6 +521,13 @@ const viewProperty = (property) => {
   text-align: center;
   color: white;
   transform: translateY(-20px);
+}
+
+.slide-actions {
+  display: flex;
+  gap: 20px; /* ✅ 添加按鈕之間的間距 */
+  justify-content: center;
+  align-items: center;
 }
 
 .slide-tag {
@@ -1061,7 +1091,6 @@ const viewProperty = (property) => {
    响应式设计
    ======================================== */
 @media (max-width: 1200px) {
-
   .property-grid,
   .cities-grid,
   .promise-grid,

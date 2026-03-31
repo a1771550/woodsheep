@@ -1,11 +1,28 @@
 {
-  "builds": [
-    {
-      "src": "**",
-      "use": "@vercel/static"
-    }
-  ],
   "routes": [
+    {
+      "src": "/woodsheep/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/woodsheep/images/(.*)",
+      "dest": "/images/$1"
+    },
+    {
+      "src": "/woodsheep/favicon.ico",
+      "dest": "/favicon.ico"
+    },
+    {
+      "src": "/(.*\\.(js|css|jpg|png|svg|ico|webp|woff2?))$",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      },
+      "dest": "/$1"
+    },
+    {
+      "src": "/admin.*",
+      "dest": "/index.html"
+    },
     {
       "src": "/(.*)",
       "dest": "/index.html"

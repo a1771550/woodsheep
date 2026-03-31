@@ -35,12 +35,12 @@ export const adminRoutes = [
   },
   {
     path: '/admin/add',
-    name: 'add-project',
+    name: 'add-property',
     component: () => import('@/views/backend/ProjectFormView.vue'),
   },
   {
     path: '/admin/edit/:id',
-    name: 'edit-project',
+    name: 'edit-property',
     component: () => import('@/views/backend/ProjectFormView.vue'),
     props: true,
   },
@@ -50,6 +50,26 @@ export const adminRoutes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [...frontendRoutes, ...adminRoutes],
+  // ✅ 添加滾動行為
+  scrollBehavior(to, from, savedPosition) {
+    // 如果有 savedPosition（例如瀏覽器前進/後退），使用保存的位置
+    if (savedPosition) {
+      return savedPosition
+    }
+
+    // 如果是返回後台列表頁，滾動到頂部
+    if (to.name === 'admin' && from.name === 'add-property') {
+      return { top: 0, behavior: 'smooth' }
+    }
+
+    // 如果是返回後台列表頁（編輯後）
+    if (to.name === 'admin' && from.name === 'edit-property') {
+      return { top: 0, behavior: 'smooth' }
+    }
+
+    // 其他情況，滾動到頂部
+    return { top: 0 }
+  },
 })
 
 export default router
