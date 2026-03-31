@@ -28,4 +28,6 @@ export default defineConfig({
       },
     },
   },
+  // ✅ 確保生產環境載入 .env.production
+  envDir: '.',
 })
