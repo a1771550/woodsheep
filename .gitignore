@@ -40,4 +40,7 @@ __screenshots__/
 *.timestamp-*-*.mjs
 
 .vercel
-.env*.local
+.env
+.env.local
+.env.production
+.env.*.local
