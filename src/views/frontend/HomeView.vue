@@ -1,11 +1,5 @@
 <template>
   <div class="home">
-    <!-- 在 Hero 區域上方添加一個明顯的測試條 -->
-    <div
-      style="background: #666; color: white; text-align: center; padding: 10px; font-weight: bold"
-    >
-      🚀 Vercel Auto-Deploy 测试 | 时间: 2026-04-01
-    </div>
     <!-- ======================================== -->
     <!-- 1. HERO 全屏图片轮播（替代纯色背景） -->
     <!-- ======================================== -->
