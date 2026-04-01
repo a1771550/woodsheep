@@ -2,13 +2,7 @@
   <div class="home">
     <!-- 在 Hero 區域上方添加一個明顯的測試條 -->
     <div
-      style="
-        background: #2c8bff;
-        color: white;
-        text-align: center;
-        padding: 10px;
-        font-weight: bold;
-      "
+      style="background: #666; color: white; text-align: center; padding: 10px; font-weight: bold"
     >
       🚀 Vercel Auto-Deploy 测试 | 时间: 2026-04-01
     </div>
