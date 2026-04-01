@@ -517,10 +517,11 @@ const viewProperty = (property) => {
   position: relative;
   z-index: 2;
   max-width: 800px;
-  padding: 0 20px;
+  /* padding: 0 20px; */
   text-align: center;
   color: white;
   transform: translateY(-20px);
+  padding: 60px 20px 0; /* 上：60px，左右：20px，下：0 */
 }
 
 .slide-actions {
