@@ -469,7 +469,9 @@ const viewProperty = (property) => {
 </script>
 
 <style scoped>
-/* 輪播容器 - 確保有足夠的內邊距 */
+/* ========================================
+   1. Hero 轮播样式
+   ======================================== */
 .hero-carousel {
   position: relative;
   height: 80vh;
@@ -477,24 +479,58 @@ const viewProperty = (property) => {
   overflow: hidden;
 }
 
-/* 輪播內容 - 使用 flex 布局確保內容在安全區域 */
+.carousel-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-images {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
+}
+
 .carousel-content {
   position: relative;
   z-index: 2;
   max-width: 800px;
   margin: 0 auto;
   padding: 0 20px;
+  padding-top: 60px; /* ✅ 只添加這一行，其他保持不變 */
   text-align: center;
   color: white;
-  /* 使用 flex 垂直布局，確保內容不會被按鈕覆蓋 */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100%;
 }
 
-/* 標籤樣式 */
+.slide-actions {
+  display: flex;
+  gap: 20px; /* ✅ 添加按鈕之間的間距 */
+  justify-content: center;
+  align-items: center;
+}
+
 .slide-tag {
   display: inline-block;
   padding: 6px 16px;
@@ -506,7 +542,6 @@ const viewProperty = (property) => {
   backdrop-filter: blur(4px);
 }
 
-/* 標題樣式 */
 .slide-title {
   font-size: 56px;
   font-weight: 700;
@@ -515,62 +550,14 @@ const viewProperty = (property) => {
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* 副標題樣式 - 確保不會被按鈕覆蓋 */
 .slide-subtitle {
   font-size: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 40px; /* ✅ 把原來的 margin-bottom 從 30px 改為 40px */
   opacity: 0.95;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  position: relative;
-  z-index: 2;
 }
 
-/* 按鈕區域 - 確保不會與副標題重疊 */
-.slide-actions {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  margin-top: 20px;
-  position: relative;
-  z-index: 2;
-}
-
-/* 導航按鈕 - 調整位置，避免與內容重疊 */
-.carousel-prev,
-.carousel-next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  color: white;
-  font-size: 24px;
-  cursor: pointer;
-  z-index: 10;
-  backdrop-filter: blur(4px);
-  transition: all 0.3s;
-  /* 確保按鈕不會因為內容增加而偏移 */
-  margin-top: -25px;
-}
-
-.carousel-prev {
-  left: 30px;
-}
-
-.carousel-next {
-  right: 30px;
-}
-
-.carousel-prev:hover,
-.carousel-next:hover {
-  background: rgba(44, 139, 255, 0.8);
-  border-color: white;
-}
-
-/* 輪播指示器 */
+/* 轮播指示器 */
 .carousel-indicators {
   position: absolute;
   bottom: 30px;
@@ -598,24 +585,560 @@ const viewProperty = (property) => {
   background: white;
 }
 
-/* 響應式調整 - 小屏幕上增加內邊距 */
-@media (max-width: 768px) {
-  .hero-carousel {
-    height: 70vh;
-    min-height: 500px;
+/* 导航按钮 */
+.carousel-prev,
+.carousel-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  color: white;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+  transition: all 0.3s;
+}
+
+.carousel-prev {
+  left: 30px;
+}
+
+.carousel-next {
+  right: 30px;
+}
+
+.carousel-prev:hover,
+.carousel-next:hover {
+  background: rgba(44, 139, 255, 0.8);
+  border-color: white;
+}
+
+/* 轮播淡入淡出动画 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.8s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* ========================================
+   2. 快捷筛选栏
+   ======================================== */
+.quick-filter {
+  margin-top: -40px;
+  position: relative;
+  z-index: 20;
+  margin-bottom: 40px;
+}
+
+.filter-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.filter-tab {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-gray-600);
+  cursor: pointer;
+  position: relative;
+}
+
+.filter-tab.active {
+  color: var(--color-primary);
+}
+
+.filter-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-primary);
+}
+
+.filter-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.filter-select {
+  flex: 1;
+  padding: 14px 16px;
+  border: 1px solid var(--color-gray-300);
+  border-radius: 8px;
+  font-size: 16px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.filter-select:hover {
+  border-color: var(--color-primary);
+}
+
+.filter-select:focus {
+  border-color: var(--color-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(44, 139, 255, 0.1);
+}
+
+.btn-filter {
+  padding: 14px 32px;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+/* ========================================
+   3. 数据看板
+   ======================================== */
+.stats-panel {
+  padding: 40px 0;
+  background: white;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 16px;
+  color: var(--color-gray-600);
+}
+
+/* ========================================
+   4. 通用区块样式
+   ======================================== */
+.featured-properties,
+.hot-cities,
+.service-flow,
+.brand-promise,
+.latest-news {
+  padding: 60px 0;
+}
+
+.featured-properties {
+  background: white;
+}
+
+.hot-cities,
+.brand-promise {
+  background: var(--color-gray-100);
+}
+
+.service-flow {
+  background: white;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-gray-900);
+  margin-bottom: 8px;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  color: var(--color-gray-600);
+}
+
+.view-all-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s;
+}
+
+.view-all-link:hover {
+  border-bottom-color: var(--color-primary);
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform 0.3s;
+}
+
+.view-all-link:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* 楼盘网格 */
+.property-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+}
+
+/* 城市网格 */
+.cities-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+}
+
+.city-card {
+  cursor: pointer;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s;
+}
+
+.city-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.city-image {
+  position: relative;
+  height: 250px;
+  background-size: cover;
+  background-position: center;
+}
+
+.city-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.2));
+}
+
+.city-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px;
+  color: white;
+  z-index: 2;
+}
+
+.city-name {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.city-count {
+  font-size: 14px;
+  margin-bottom: 12px;
+  opacity: 0.9;
+}
+
+.city-link {
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.9;
+  transition: all 0.3s;
+  display: inline-block;
+}
+
+.city-card:hover .city-link {
+  transform: translateX(4px);
+  opacity: 1;
+}
+
+/* 服务流程 */
+.flow-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+}
+
+.flow-step {
+  text-align: center;
+  padding: 30px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s;
+}
+
+.flow-step:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.step-number {
+  width: 28px;
+  height: 28px;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 auto 16px;
+}
+
+.step-icon {
+  font-size: 40px;
+  margin-bottom: 16px;
+}
+
+.step-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-gray-900);
+  margin-bottom: 12px;
+}
+
+.step-desc {
+  font-size: 14px;
+  color: var(--color-gray-600);
+  line-height: 1.5;
+}
+
+/* 品牌承诺 */
+.promise-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+.promise-card {
+  text-align: center;
+  padding: 40px 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s;
+}
+
+.promise-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.promise-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.promise-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-gray-900);
+  margin-bottom: 12px;
+}
+
+.promise-desc {
+  font-size: 15px;
+  color: var(--color-gray-600);
+  line-height: 1.6;
+}
+
+/* 最新资讯 */
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.news-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s;
+}
+
+.news-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.news-image {
+  height: 200px;
+  overflow: hidden;
+}
+
+.news-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.news-card:hover .news-image img {
+  transform: scale(1.05);
+}
+
+.news-content {
+  padding: 24px;
+}
+
+.news-date {
+  font-size: 13px;
+  color: var(--color-gray-500);
+  margin-bottom: 12px;
+  display: block;
+}
+
+.news-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-gray-900);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.news-excerpt {
+  font-size: 14px;
+  color: var(--color-gray-600);
+  line-height: 1.6;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.news-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.news-link:hover {
+  text-decoration: underline;
+}
+
+/* 加载状态 */
+.loading-state,
+.empty-state {
+  text-align: center;
+  padding: 60px;
+  color: var(--color-gray-600);
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid var(--color-gray-200);
+  border-top: 3px solid var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
 
-  .carousel-content {
-    padding: 0 20px;
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   响应式设计
+   ======================================== */
+@media (max-width: 1200px) {
+  .property-grid,
+  .cities-grid,
+  .promise-grid,
+  .news-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .flow-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .hero-carousel {
+    height: 70vh;
   }
 
   .slide-title {
-    font-size: 32px;
+    font-size: 44px;
+  }
+
+  .filter-row {
+    flex-wrap: wrap;
+  }
+
+  .filter-select {
+    flex: 1 1 calc(50% - 8px);
+  }
+
+  .btn-filter {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-carousel {
+    height: 60vh;
+    min-height: 500px;
+  }
+
+  .slide-title {
+    font-size: 36px;
   }
 
   .slide-subtitle {
-    font-size: 16px;
-    margin-bottom: 25px;
+    font-size: 18px;
   }
 
   .carousel-prev,
@@ -623,7 +1146,6 @@ const viewProperty = (property) => {
     width: 40px;
     height: 40px;
     font-size: 20px;
-    margin-top: -20px;
   }
 
   .carousel-prev {
@@ -633,22 +1155,74 @@ const viewProperty = (property) => {
   .carousel-next {
     right: 15px;
   }
-}
 
-/* 超小屏幕 */
-@media (max-width: 480px) {
-  .slide-title {
-    font-size: 24px;
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+
+  .property-grid,
+  .cities-grid,
+  .promise-grid,
+  .news-grid,
+  .flow-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .filter-tabs {
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .filter-tab {
+    padding: 12px 16px;
+    white-space: nowrap;
+  }
+
+  .quick-filter {
+    margin-top: 0;
+    padding: 0 20px;
+  }
+
+  .carousel-content {
+    padding-top: 80px; /* ✅ 小屏幕上增加更多頂部空間 */
   }
 
   .slide-subtitle {
-    font-size: 14px;
-    margin-bottom: 20px;
+    margin-bottom: 30px; /* ✅ 小屏幕上適當減少 */
+  }
+}
+
+@media (max-width: 480px) {
+  .slide-title {
+    font-size: 28px;
   }
 
-  .btn-large {
-    padding: 10px 20px;
+  .slide-subtitle {
+    font-size: 16px;
+  }
+
+  .slide-tag {
+    font-size: 12px;
+  }
+
+  .btn {
+    padding: 10px 24px;
     font-size: 14px;
+  }
+
+  .stat-number {
+    font-size: 36px;
+  }
+
+  .filter-select {
+    flex: 1 1 100%;
   }
 }
 </style>
