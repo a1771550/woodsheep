@@ -258,7 +258,7 @@
 import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { usePropertyStore } from '@/stores/propertyStore'
-import PropertyCard from '@/components/PropertyCard.vue'
+import PropertyCard from '@/components/frontend/PropertyCard.vue'
 import { siteConfig } from '@/config'
 import { useCarouselStore } from '@/stores/carouselStore'
 
