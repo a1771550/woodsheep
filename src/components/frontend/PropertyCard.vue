@@ -115,7 +115,7 @@ const viewDetail = (e) => {
   object-fit: cover; /* 確保圖片覆蓋整個區域，不變形 */
   object-position: center; /* 圖片居中顯示 */
   display: block;
-  /* transform: scale(1.02); 稍微放大一點點，消除邊緣白邊 */
+  transform: scale(1.02); /*稍微放大一點點，消除邊緣白邊 */
 }
 
 /* hover 時輕微放大 */
