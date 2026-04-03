@@ -1148,6 +1148,41 @@ section {
 }
 
 @media (max-width: 768px) {
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .properties-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+
+  .property-card {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cities-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+
+  .section-title {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .section-subtitle {
+    text-align: center;
+  }
+
+  .section-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
   .hero-carousel {
     height: 60vh;
     min-height: 500px;
@@ -1189,11 +1224,11 @@ section {
     grid-template-columns: 1fr;
   }
 
-  .section-header {
+  /* .section-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
-  }
+  } */
 
   .filter-tabs {
     overflow-x: auto;
