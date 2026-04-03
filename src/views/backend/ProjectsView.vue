@@ -368,7 +368,7 @@ onMounted(() => {
 }
 
 /* 項目卡片圖片 */
-.card-image {
+/* .card-image {
   width: 100%;
   height: 180px;
   overflow: hidden;
@@ -384,6 +384,36 @@ onMounted(() => {
 }
 
 .project-card:hover {
+  transform: scale(1.05);
+} */
+
+/* 項目卡片圖片 - 確保圖片完全覆蓋 */
+/* 項目卡片圖片 - 強制填滿 */
+.card-image {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-image img {
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  /* 強制放大以填滿 */
+  transform: scale(1.02);
+}
+
+/* hover 時輕微放大（可選） */
+.project-card:hover .card-image img {
   transform: scale(1.05);
 }
 </style>
