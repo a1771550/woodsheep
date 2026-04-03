@@ -23,6 +23,11 @@ export const frontendRoutes = [
     name: 'contact',
     component: () => import('@/views/frontend/ContactView.vue'),
   },
+  {
+    path: '/properties/:id',
+    name: 'property-detail',
+    component: () => import('@/views/frontend/PropertyDetail.vue'),
+  },
 ]
 
 // 後台路由 (管理系統)

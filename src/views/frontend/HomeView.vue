@@ -357,29 +357,47 @@ const totalAgents = ref(10) // 示例数据
 // ========================================
 // 4. 热门城市数据
 // ========================================
-const hotCities = computed(() => [
-  {
-    name: '珠海',
-    count: propertyStore.properties?.filter((p) => p.city === '珠海').length || 0,
-    image: 'images/cities/zhuhai.jpg',
-  },
-  {
-    name: '中山',
-    count: propertyStore.properties?.filter((p) => p.city === '中山').length || 0,
-    image: 'images/cities/zhongshan.jpg',
-  },
-  {
-    name: '横琴',
-    count: 3,
-    image: 'images/cities/hengqin.jpg',
-  },
-  {
-    name: '坦洲',
-    count: 2,
-    image: 'images/cities/tanzhou.jpg',
-  },
-])
+// 熱門城市數據（從 store 動態計算）
+// 熱門城市數據（從 store 動態獲取所有有樓盤的城市）
+const hotCities = computed(() => {
+  const properties = propertyStore.properties || []
 
+  // 統計每個城市的樓盤數量
+  const cityMap = new Map()
+  properties.forEach((p) => {
+    if (p.city) {
+      const count = cityMap.get(p.city) || 0
+      cityMap.set(p.city, count + 1)
+    }
+  })
+
+  // 將城市名稱轉換為圖片路徑
+  const getCityImage = (cityName) => {
+    // 轉換為拼音（簡單處理）
+    const imageMap = {
+      珠海: 'zhuhai',
+      中山: 'zhongshan',
+      广州: 'guangzhou',
+      深圳: 'shenzhen',
+      横琴: 'hengqin',
+      坦洲: 'tanzhou',
+      香港: 'hongkong',
+      澳门: 'macau',
+    }
+
+    const imageName = imageMap[cityName] || cityName
+    return `images/cities/${imageName}.jpg`
+  }
+
+  // 轉換為數組，按樓盤數量降序排列
+  return Array.from(cityMap.entries())
+    .map(([name, count]) => ({
+      name,
+      count,
+      image: getCityImage(name),
+    }))
+    .sort((a, b) => b.count - a.count)
+})
 // ========================================
 // 5. 精选楼盘
 // ========================================

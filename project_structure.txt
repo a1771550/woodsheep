@@ -1,0 +1,94 @@
+* root:
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----         3/31/2026  10:52 PM                .github
+d-----         3/31/2026  10:52 PM                .vscode
+d-----         3/31/2026  10:52 PM                cypress
+d-----         3/31/2026  10:52 PM                deploy_temp
+d-----         3/31/2026  10:52 PM                dist-vc
+d-----         3/31/2026  10:52 PM                public
+d-----         3/31/2026  10:52 PM                src
+d-----         3/31/2026  10:52 PM                node_modules
+d-----         3/31/2026  11:39 PM                vercel-dist
+d-----          4/1/2026   5:21 PM                dist
+d-----          4/1/2026   5:22 PM                .vercel
+-a----         3/31/2026  10:52 PM            216 .editorconfig
+-a----         3/31/2026  10:52 PM             19 .gitattributes
+-a----          4/1/2026   5:22 PM            466 .gitignore
+-a----         3/31/2026  10:52 PM            217 .oxlintrc.json
+-a----         3/31/2026  10:52 PM            120 .prettierrc.json
+-a----         3/31/2026  10:52 PM           1550 README.md
+-a----         3/31/2026  10:52 PM            188 cypress.config.js
+-a----         3/31/2026  10:52 PM           1032 eslint.config.js
+-a----         3/31/2026  10:52 PM             81 gitignore
+-a----          4/1/2026   4:25 PM            339 index.html
+-a----         3/31/2026  10:52 PM            116 jsconfig.json.bak
+-a----         3/31/2026  10:54 PM         112204 package-lock.json
+-a----         3/31/2026  10:52 PM           1077 package.json
+-a----         3/31/2026  10:52 PM            756 pre-deploy-vercel.js
+-a----         3/31/2026  10:52 PM            574 vercel.json
+-a----         3/31/2026  10:52 PM            148 vite.config.backend.js
+-a----         3/31/2026  10:52 PM            630 vite.config.frontend.js
+-a----         3/31/2026  11:05 PM           1210 vite.config.js
+-a----         3/31/2026  10:52 PM            406 vite.config.vercel.js
+-a----         3/31/2026  10:52 PM            382 vitest.config.js
+-a----         3/31/2026  10:56 PM            129 .env.local
+
+* src:
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----         3/31/2026  10:52 PM                assets
+d-----         3/31/2026  10:52 PM                components
+d-----         3/31/2026  10:52 PM                config
+d-----         3/31/2026  10:52 PM                router
+d-----         3/31/2026  10:52 PM                services
+d-----         3/31/2026  10:52 PM                stores
+d-----         3/31/2026  10:52 PM                views
+-a----         3/31/2026  10:52 PM           2168 App.vue
+-a----         3/31/2026  10:52 PM            321 main.js
+
+* src/components:
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----         3/31/2026  10:52 PM                __tests__
+d-----         3/31/2026  10:52 PM                backend
+d-----         3/31/2026  10:52 PM                frontend
+d-----         3/31/2026  10:52 PM                icons
+-a----         3/31/2026  10:52 PM            700 HelloWorld.vue
+-a----         3/31/2026  10:52 PM           3500 TheWelcome.vue
+-a----         3/31/2026  10:52 PM           1413 WelcomeItem.vue
+
+* src/components/backend
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----         3/31/2026  10:52 PM           6069 BackendHeader.vue
+-a----         3/31/2026  10:52 PM           2357 ConfirmDialog.vue
+
+* src/components/frontend
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----         3/31/2026  10:52 PM           5954 FrontendFooter.vue
+-a----         3/31/2026  10:52 PM           5435 FrontendHeader.vue
+-a----         3/31/2026  10:52 PM             62 ImageGallery.vue
+-a----          4/3/2026   4:17 PM           5436 PropertyCard.vue
+
+* src/views:
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----         3/31/2026  10:52 PM                backend
+d-----         3/31/2026  10:52 PM                frontend
+
+* src/views/backend:
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----         3/31/2026  10:52 PM          15512 ProjectFormView.vue
+-a----         3/31/2026  10:52 PM           7914 ProjectsView.vue
+
+* src/views/frontend:
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----         3/31/2026  10:52 PM            220 AboutView.vue
+-a----         3/31/2026  10:52 PM             69 ContactView.vue
+-a----          4/3/2026   4:30 PM          28007 HomeView.vue
+-a----          4/3/2026   4:13 PM           7576 PropertyDisplay.vue
+
