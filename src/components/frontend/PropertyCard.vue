@@ -83,7 +83,7 @@ const viewDetail = (e) => {
   background: white;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   transition:
     transform 0.3s,
     box-shadow 0.3s;
@@ -95,23 +95,30 @@ const viewDetail = (e) => {
 
 .property-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
 
+/* ✅ 修復問題1：圖片始終覆蓋整個區域 */
+/* 確保圖片填滿整個容器 */
 .card-image {
   position: relative;
+  width: 100%;
   height: 200px;
   overflow: hidden;
-  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  background: linear-gradient(135deg, #e0e0e0, #c0c0c0);
+  flex-shrink: 0;
 }
 
 .card-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s;
+  object-fit: cover; /* 確保圖片覆蓋整個區域，不變形 */
+  object-position: center; /* 圖片居中顯示 */
+  display: block;
+  /* transform: scale(1.02); 稍微放大一點點，消除邊緣白邊 */
 }
 
+/* hover 時輕微放大 */
 .property-card:hover .card-image img {
   transform: scale(1.05);
 }
@@ -122,7 +129,8 @@ const viewDetail = (e) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #666;
+  background: #f0f0f0;
+  color: #999;
 }
 
 .card-badges {
@@ -132,6 +140,7 @@ const viewDetail = (e) => {
   right: 15px;
   display: flex;
   justify-content: space-between;
+  z-index: 2;
 }
 
 .city-badge {
@@ -167,11 +176,13 @@ const viewDetail = (e) => {
   color: white;
 }
 
+/* ✅ 修復問題2：卡片內容區域有明顯的白色背景 */
 .card-content {
   padding: 20px;
   flex: 1;
   display: flex;
   flex-direction: column;
+  background: white;
 }
 
 .property-name {
@@ -255,6 +266,8 @@ const viewDetail = (e) => {
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
 }
 
 .contact {
@@ -277,6 +290,7 @@ const viewDetail = (e) => {
   background: #0066cc;
 }
 
+/* 響應式 */
 @media (max-width: 768px) {
   .card-image {
     height: 180px;

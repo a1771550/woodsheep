@@ -21,6 +21,11 @@
 
     <div class="properties-grid">
       <div v-for="project in filteredProjects" :key="project.id" class="project-card">
+        <!-- ✅ 添加小圖片區域 -->
+        <div class="card-image-thumb">
+          <img :src="getProjectImage(project)" :alt="project.name" @error="handleImageError" />
+        </div>
+
         <div class="card-header">
           <h3>{{ project.name }}</h3>
           <span class="city-badge">{{ project.city }}</span>
@@ -81,6 +86,21 @@
 import { usePropertyStore } from '@/stores/propertyStore'
 import { computed, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+// 導入默認圖片
+import defaultImage from '@/assets/images/properties/default-property.webp'
+
+// 獲取項目圖片（如果沒有圖片則使用默認圖片）
+const getProjectImage = (project) => {
+  if (project.images && project.images.length > 0) {
+    return project.images[0]
+  }
+  return defaultImage
+}
+
+// 圖片加載失敗時的處理
+const handleImageError = (event) => {
+  event.target.src = defaultImage
+}
 
 const store = usePropertyStore()
 const router = useRouter()
@@ -345,5 +365,24 @@ onMounted(() => {
 .status-badge.已成交 {
   background: rgba(108, 117, 125, 0.9);
   color: white;
+}
+
+/* 項目卡片小圖片 */
+.card-image-thumb {
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+}
+
+.card-image-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-card:hover .card-image-thumb img {
+  transform: scale(1.05);
+  transition: transform 0.3s;
 }
 </style>

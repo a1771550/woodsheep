@@ -139,6 +139,12 @@
         </div>
       </div>
 
+      <!-- 圖片上傳 -->
+      <div class="form-group">
+        <label>項目圖片</label>
+        <ImageUploader v-model="formData.images" />
+      </div>
+
       <!-- 表单操作 -->
       <div class="form-actions">
         <button type="button" class="btn-secondary" @click="cancelForm" :disabled="isSubmitting">
@@ -165,6 +171,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { usePropertyStore } from '@/stores/propertyStore'
+import ImageUploader from '@/components/backend/ImageUploader.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -176,7 +183,6 @@ const submitted = ref(false)
 const isSubmitting = ref(false)
 const showSuccessMessage = ref(false)
 const successMessage = ref('')
-const uploadedImages = ref([])
 
 // 表单数据
 const formData = ref({
@@ -240,7 +246,6 @@ const loadProjectForEdit = async () => {
         description: project.description || '',
         images: project.images || [],
       }
-      uploadedImages.value = formData.value.images.map((url) => ({ url, isLocal: false }))
 
       if (project.tags && Array.isArray(project.tags)) {
         tagsInput.value = project.tags.join(', ')
@@ -289,7 +294,7 @@ const handleSubmit = async () => {
   isSubmitting.value = true
 
   try {
-    // 準備要儲存的資料
+    // 準備要儲存的資料 - 直接使用 formData.images
     const projectData = {
       name: formData.value.name,
       city: formData.value.city,
@@ -297,9 +302,10 @@ const handleSubmit = async () => {
       price: formData.value.price,
       contact: formData.value.contact,
       status: formData.value.status,
+      source: formData.value.source || '手动添加',
       tags: parsedTags.value,
       description: formData.value.description || '',
-      images: uploadedImages.value.map((img) => img.url),
+      images: formData.value.images, // ✅ 直接使用 formData.images
     }
 
     // 根據編輯或新增執行不同操作
@@ -332,35 +338,6 @@ const cancelForm = () => {
   if (confirm('确定要取消吗？未保存的数据将会丢失。')) {
     router.push('/properties')
   }
-}
-
-const resetForm = () => {
-  formData.value = {
-    name: '',
-    city: '',
-    size: '',
-    price: '',
-    contact: '',
-    status: '待跟进',
-    source: '手动添加',
-  }
-  tagsInput.value = ''
-  submitted.value = false
-}
-
-// 圖片上傳函數
-async function uploadImage(file) {
-  const fileName = `${Date.now()}_${file.name}`
-  const { data, error } = await supabase.storage.from('property-images').upload(fileName, file)
-
-  if (error) throw error
-
-  // 取得公開 URL
-  const {
-    data: { publicUrl },
-  } = supabase.storage.from('property-images').getPublicUrl(fileName)
-
-  return publicUrl
 }
 </script>
 

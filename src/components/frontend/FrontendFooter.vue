@@ -75,32 +75,29 @@ const router = useRouter()
 const socialLinks = [
   { name: '微信', icon: '📱', url: '#' },
   { name: '公众号', icon: '💬', url: '#' },
-  { name: '邮箱', icon: '📧', url: 'mailto:contact@muyangproperty.com' }
+  { name: '邮箱', icon: '📧', url: 'mailto:contact@muyangproperty.com' },
 ]
 
 const quickLinks = [
   { path: '/', name: '首页' },
   { path: '/properties', name: '楼盘展示' },
   { path: '/about', name: '关于我们' },
-  { path: '/contact', name: '联系我们' }
+  { path: '/contact', name: '联系我们' },
 ]
 
-const hotCities = [
-  { name: '珠海' },
-  { name: '中山' }
-]
+const hotCities = [{ name: '珠海' }, { name: '中山' }]
 
 const contactInfo = [
   { icon: '📍', value: '香港屯门 / 珠海香洲', link: null },
   { icon: '📞', value: '0756-xxxxxxx', link: 'tel:0756-xxxxxxx' },
   { icon: '📧', value: 'contact@muyangproperty.com', link: 'mailto:contact@muyangproperty.com' },
-  { icon: '🕒', value: '周一至周五 9:00-18:00', link: null }
+  { icon: '🕒', value: '周一至周五 9:00-18:00', link: null },
 ]
 
 const filterByCity = (city) => {
   router.push({
     path: '/properties',
-    query: { city }
+    query: { city },
   })
 }
 </script>
@@ -177,7 +174,7 @@ const filterByCity = (city) => {
   content: '';
   position: absolute;
   bottom: -8px;
-  left: 0;
+  left: 0 !important;
   width: 40px;
   height: 2px;
   background: #2c8bff;
@@ -263,7 +260,7 @@ const filterByCity = (city) => {
   }
 
   .footer-title::after {
-    left: 50%;
+    left: 3% !important;
     transform: translateX(-50%);
   }
 

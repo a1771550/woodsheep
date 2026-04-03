@@ -260,7 +260,9 @@ import { useRouter } from 'vue-router'
 import { usePropertyStore } from '@/stores/propertyStore'
 import PropertyCard from '@/components/frontend/PropertyCard.vue'
 import { siteConfig } from '@/config'
+import { useCarouselStore } from '@/stores/carouselStore'
 
+const carouselStore = useCarouselStore()
 const router = useRouter()
 const propertyStore = usePropertyStore()
 const loading = ref(true)
@@ -268,50 +270,36 @@ const loading = ref(true)
 // ========================================
 // 1. Hero 轮播数据
 // ========================================
-const heroSlides = [
-  {
-    id: 1,
-    image: 'images/hero/zhuhai-hero.webp',
-    tag: '珠海·主城核心',
-    title: '盛东·江山赋',
-    subtitle: '山海湖园藏品级资产 | 约155-325㎡主城云顶大宅',
-    ctaText: '查看详情',
-    ctaLink: '/properties/1',
-  },
-  {
-    id: 2,
-    image: 'images/hero/zhongshan-hero.jpg',
-    tag: '中山·深中通道',
-    title: '遠洋繁花里',
-    subtitle: '香港直通车社区 | 天天發車 直達太子荃灣',
-    ctaText: '查看详情',
-    ctaLink: '/properties/4',
-  },
-  {
-    id: 3,
-    image: 'images/hero/featured-hero.webp',
-    tag: '珠海·横琴',
-    title: '华发·云玺',
-    subtitle: '约50万㎡港湾生活社区 | 一线半山海景奢宅',
-    ctaText: '查看详情',
-    ctaLink: '/properties/2',
-  },
-]
+const heroSlides = computed(() => {
+  return carouselStore.slides.map((slide) => ({
+    id: slide.id,
+    image: slide.image_url,
+    tag: slide.title.split('·')[0] || slide.title,
+    title: slide.title,
+    subtitle: slide.subtitle || '',
+    ctaText: slide.button_text || '查看详情',
+    ctaLink: slide.button_link || '#',
+  }))
+})
 
 const currentSlide = ref(0)
 let slideInterval = null
 
 // 轮播控制
 const nextSlide = () => {
-  currentSlide.value = (currentSlide.value + 1) % heroSlides.length
+  if (heroSlides.value.length === 0) return
+  currentSlide.value = (currentSlide.value + 1) % heroSlides.value.length
 }
 
 const prevSlide = () => {
-  currentSlide.value = (currentSlide.value - 1 + heroSlides.length) % heroSlides.length
+  if (heroSlides.value.length === 0) return
+  currentSlide.value = (currentSlide.value - 1 + heroSlides.value.length) % heroSlides.value.length
 }
 
 // 自动播放
 const startAutoPlay = () => {
+  if (heroSlides.value.length === 0) return
+  if (slideInterval) clearInterval(slideInterval)
   slideInterval = setInterval(nextSlide, 5000)
 }
 
@@ -463,8 +451,12 @@ const latestNews = [
 // ========================================
 onMounted(async () => {
   await propertyStore.fetchProperties()
+  await carouselStore.fetchSlides()
   loading.value = false
-  startAutoPlay()
+  // 延遲啟動輪播，確保 DOM 更新完成
+  setTimeout(() => {
+    startAutoPlay()
+  }, 100)
 })
 
 onUnmounted(() => {
@@ -487,6 +479,9 @@ const viewProperty = (property) => {
 </script>
 
 <style scoped>
+section {
+  background: #f5f7fa; /* 統一淺灰色背景 */
+}
 /* ========================================
    1. Hero 轮播样式
    ======================================== */
@@ -772,10 +767,17 @@ const viewProperty = (property) => {
 .brand-promise,
 .latest-news {
   padding: 60px 0;
+  background: white;
 }
 
 .featured-properties {
-  background: white;
+  padding: 60px 0;
+}
+
+.properties-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
 }
 
 .hot-cities,
@@ -1204,7 +1206,7 @@ const viewProperty = (property) => {
   }
 
   .quick-filter {
-    margin-top: 0;
+    margin-top: 1rem;
     padding: 0 20px;
   }
 
