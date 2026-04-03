@@ -21,8 +21,8 @@
 
     <div class="properties-grid">
       <div v-for="project in filteredProjects" :key="project.id" class="project-card">
-        <!-- ✅ 添加小圖片區域 -->
-        <div class="card-image-thumb">
+        <!-- ✅ 添加圖片區域 -->
+        <div class="card-image">
           <img :src="getProjectImage(project)" :alt="project.name" @error="handleImageError" />
         </div>
 
@@ -367,22 +367,23 @@ onMounted(() => {
   color: white;
 }
 
-/* 項目卡片小圖片 */
-.card-image-thumb {
+/* 項目卡片圖片 */
+.card-image {
   width: 100%;
-  height: 150px;
+  height: 180px;
   overflow: hidden;
   background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
 }
 
-.card-image-thumb img {
+.card-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.3s;
+  transform: scale(1.02);
 }
 
-.project-card:hover .card-image-thumb img {
+.project-card:hover {
   transform: scale(1.05);
-  transition: transform 0.3s;
 }
 </style>
