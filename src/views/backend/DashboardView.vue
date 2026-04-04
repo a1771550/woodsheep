@@ -91,7 +91,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="property in recentProperties" :key="property.id">
+          <!-- <tr v-for="property in recentProperties" :key="property.id">
             <td class="property-name clickable" @click="goToEdit(property.id)">
               {{ property.name }}
             </td>
@@ -104,6 +104,24 @@
             <td>{{ formatDate(property.updated_at || property.created_at) }}</td>
             <td>
               <button class="btn-edit-small" @click="goToEdit(property.id)">编辑</button>
+            </td>
+          </tr> -->
+          <tr
+            v-for="property in recentProperties"
+            :key="property.id"
+            @click="goToEdit(property.id)"
+            style="cursor: pointer"
+          >
+            <td class="property-name">{{ property.name }}</td>
+            <td>{{ property.city }}</td>
+            <td>
+              <span :class="['status-badge', property.status]">
+                {{ property.status }}
+              </span>
+            </td>
+            <td>{{ formatDate(property.created_at) }}</td>
+            <td class="action-cell">
+              <button class="btn-edit-icon" @click="goToEdit(property.id)" title="编辑">✏️</button>
             </td>
           </tr>
         </tbody>
@@ -481,6 +499,26 @@ onMounted(() => {
   color: #999;
 }
 
+.action-cell {
+  width: 50px;
+  text-align: center;
+}
+
+.btn-edit-icon {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 5px 8px;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+.btn-edit-icon:hover {
+  background: #f0f0f0;
+  transform: scale(1.1);
+}
+
 /* 响应式 */
 @media (max-width: 768px) {
   .stats-grid {
@@ -505,12 +543,22 @@ onMounted(() => {
     padding: 8px;
   }
 
-  .recent-table .btn-edit-small {
-    display: none;
-  }
-
   .property-name.clickable {
     text-decoration: underline;
+  }
+  .btn-edit-small {
+    display: inline-block;
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  .action-cell {
+    width: 40px;
+  }
+
+  .btn-edit-icon {
+    font-size: 16px;
+    padding: 4px 6px;
   }
 }
 </style>
