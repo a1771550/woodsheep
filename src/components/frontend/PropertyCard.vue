@@ -42,7 +42,7 @@
       </div>
 
       <div class="card-footer">
-        <span class="contact">{{ contactName }}</span>
+        <WhatsAppLink :contact="contactName" custom-class="contact" />
         <button class="btn-detail" @click.stop="viewDetail">查看详情</button>
       </div>
     </div>
@@ -52,6 +52,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
+import WhatsAppLink from '@/components/common/WhatsAppLink.vue'
 
 const props = defineProps({
   property: {

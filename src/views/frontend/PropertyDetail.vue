@@ -54,7 +54,7 @@
           </div>
           <div class="info-item">
             <span class="info-label">聯繫人</span>
-            <span class="info-value">{{ property.contact || '請聯繫我們' }}</span>
+            <WhatsAppLink :contact="property.contact" custom-class="info-value" />
           </div>
           <div class="info-item">
             <span class="info-label">信息來源</span>
@@ -114,6 +114,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { usePropertyStore } from '@/stores/propertyStore'
 import { formatDate } from '@/utils/helpers'
+import WhatsAppLink from '@/components/common/WhatsAppLink.vue'
 
 const route = useRoute()
 const router = useRouter()
