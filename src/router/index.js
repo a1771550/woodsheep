@@ -55,6 +55,12 @@ export const adminRoutes = [
     component: () => import('@/views/backend/CarouselView.vue'),
     meta: { requiresAuth: true },
   },
+  {
+    path: '/admin/dashboard',
+    name: 'admin-dashboard',
+    component: () => import('@/views/backend/DashboardView.vue'),
+    meta: { requiresAuth: true },
+  },
 ]
 
 // 本地開發時使用全部路由

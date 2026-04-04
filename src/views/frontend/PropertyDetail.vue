@@ -60,6 +60,13 @@
             <span class="info-label">信息來源</span>
             <span class="info-value">{{ property.source || '手動添加' }}</span>
           </div>
+          <!-- 在資訊網格中添加 -->
+          <div class="info-item">
+            <span class="info-label">最後更新</span>
+            <span class="info-value">{{
+              formatDate(property.updated_at || property.created_at)
+            }}</span>
+          </div>
         </div>
 
         <!-- 標籤 -->
@@ -106,6 +113,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { usePropertyStore } from '@/stores/propertyStore'
+import { formatDate } from '@/utils/helpers'
 
 const route = useRoute()
 const router = useRouter()

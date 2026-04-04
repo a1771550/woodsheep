@@ -8,6 +8,7 @@ export const usePropertyStore = defineStore('property', () => {
   const loading = ref(false)
   const error = ref(null)
 
+  // 獲取所有項目
   const fetchProperties = async () => {
     loading.value = true
     error.value = null
@@ -16,16 +17,14 @@ export const usePropertyStore = defineStore('property', () => {
       const { data, error: err } = await supabase
         .from('properties')
         .select('*')
-        .order('created_at', { ascending: false })
+        .order('updated_at', { ascending: false }) // ✅ 按更新時間排序
 
       if (err) throw err
       properties.value = data || []
       console.log(`📦 已載入 ${properties.value.length} 個樓盤`)
-      return data // ✅ 確保返回數據
     } catch (err) {
       error.value = err.message
       console.error('❌ 載入失敗:', err)
-      return [] // ✅ 返回空陣列
     } finally {
       loading.value = false
     }
@@ -37,6 +36,7 @@ export const usePropertyStore = defineStore('property', () => {
     error.value = null
 
     try {
+      const now = new Date().toISOString()
       const { data, error: err } = await supabase
         .from('properties')
         .insert([
@@ -51,12 +51,13 @@ export const usePropertyStore = defineStore('property', () => {
             tags: propertyData.tags || [],
             images: propertyData.images || [],
             description: propertyData.description || '',
+            created_at: now,
+            updated_at: now, // ✅ 添加更新時間
           },
         ])
         .select()
 
       if (err) throw err
-
       if (data && data.length > 0) {
         properties.value.unshift(data[0])
         console.log('✅ 新增成功:', data[0].name)
@@ -79,12 +80,14 @@ export const usePropertyStore = defineStore('property', () => {
     try {
       const { data, error: err } = await supabase
         .from('properties')
-        .update(updates)
+        .update({
+          ...updates,
+          updated_at: new Date().toISOString(), // ✅ 自動更新修改時間
+        })
         .eq('id', id)
         .select()
 
       if (err) throw err
-
       if (data && data.length > 0) {
         const index = properties.value.findIndex((p) => p.id === id)
         if (index !== -1) {
@@ -111,7 +114,6 @@ export const usePropertyStore = defineStore('property', () => {
       const { error: err } = await supabase.from('properties').delete().eq('id', id)
 
       if (err) throw err
-
       properties.value = properties.value.filter((p) => p.id !== id)
       console.log('✅ 刪除成功，ID:', id)
     } catch (err) {
@@ -123,12 +125,11 @@ export const usePropertyStore = defineStore('property', () => {
     }
   }
 
-  // 在 propertyStore.js 中添加
+  // 根據 ID 獲取項目
   const getProjectById = (id) => {
     return properties.value.find((p) => p.id === id)
   }
 
-  // 在 return 中導出
   return {
     properties,
     loading,
@@ -137,6 +138,6 @@ export const usePropertyStore = defineStore('property', () => {
     addProperty,
     updateProperty,
     deleteProperty,
-    getProjectById, // ✅ 新增
+    getProjectById,
   }
 })
