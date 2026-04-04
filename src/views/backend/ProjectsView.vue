@@ -6,8 +6,9 @@
         <input v-model="searchQuery" placeholder="搜索项目名称..." class="search-input" />
         <select v-model="filterCity" class="filter-select">
           <option value="">所有城市</option>
-          <option value="珠海">珠海</option>
-          <option value="中山">中山</option>
+          <option v-for="city in cityOptions" :key="city" :value="city">
+            {{ city }}
+          </option>
         </select>
         <select v-model="filterStatus" class="filter-select">
           <option value="">所有状态</option>
@@ -89,6 +90,12 @@ import { useRouter } from 'vue-router'
 // 導入默認圖片
 import defaultImage from '@/assets/images/properties/default-property.webp'
 
+// 動態獲取所有有樓盤的城市
+const cityOptions = computed(() => {
+  const properties = store.properties || []
+  const cities = [...new Set(properties.map((p) => p.city).filter((city) => city))]
+  return cities.sort()
+})
 // 獲取項目圖片（如果沒有圖片則使用默認圖片）
 const getProjectImage = (project) => {
   if (project.images && project.images.length > 0) {
