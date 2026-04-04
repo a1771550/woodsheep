@@ -18,6 +18,10 @@
           <span class="nav-icon">📊</span>
           <span class="nav-label">项目管理</span>
         </router-link>
+        <router-link to="/admin/carousel" class="nav-item" active-class="active">
+          <span class="nav-icon">🎠</span>
+          <span class="nav-label">轮播图管理</span>
+        </router-link>
         <router-link to="/admin/dashboard" class="nav-item" active-class="active">
           <span class="nav-icon">📈</span>
           <span class="nav-label">数据看板</span>
@@ -53,6 +57,9 @@
       <div v-if="showMobileMenu" class="mobile-nav">
         <router-link to="/admin" class="mobile-nav-item" @click="closeMobileMenu">
           <span class="nav-icon">📊</span> 项目管理
+        </router-link>
+        <router-link to="/admin/carousel" class="mobile-nav-item" @click="closeMobileMenu">
+          <span class="nav-icon">🎠</span> 轮播图管理
         </router-link>
         <router-link to="/admin/dashboard" class="mobile-nav-item" @click="closeMobileMenu">
           <span class="nav-icon">📈</span> 数据看板

@@ -49,6 +49,12 @@ export const adminRoutes = [
     component: () => import('@/views/backend/ProjectFormView.vue'),
     props: true,
   },
+  {
+    path: '/admin/carousel',
+    name: 'admin-carousel',
+    component: () => import('@/views/backend/CarouselView.vue'),
+    meta: { requiresAuth: true },
+  },
 ]
 
 // 本地開發時使用全部路由
