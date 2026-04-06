@@ -6,7 +6,27 @@ export const useCitySettingsStore = defineStore('citySettings', () => {
   const cities = ref([])
   const loading = ref(false)
 
-  // 獲取所有城市設置
+  // 獲取所有城市設置（管理員用）
+  const fetchAllCities = async () => {
+    loading.value = true
+    try {
+      const { data, error } = await supabase
+        .from('city_settings')
+        .select('*')
+        .order('display_order', { ascending: true })
+
+      if (error) throw error
+      cities.value = data || []
+      return cities.value
+    } catch (error) {
+      console.error('載入失敗:', error)
+      return []
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // 獲取所有啟用的城市（前台用）
   const fetchCities = async () => {
     loading.value = true
     try {
@@ -18,26 +38,10 @@ export const useCitySettingsStore = defineStore('citySettings', () => {
 
       if (error) throw error
       cities.value = data || []
-    } catch (error) {
-      console.error('載入城市設置失敗:', error)
-    } finally {
-      loading.value = false
-    }
-  }
-
-  // 管理員：獲取所有城市（包括未啟用）
-  const fetchAllCities = async () => {
-    loading.value = true
-    try {
-      const { data, error } = await supabase
-        .from('city_settings')
-        .select('*')
-        .order('display_order', { ascending: true })
-
-      if (error) throw error
-      cities.value = data || []
+      return cities.value
     } catch (error) {
       console.error('載入失敗:', error)
+      return []
     } finally {
       loading.value = false
     }
@@ -45,11 +49,15 @@ export const useCitySettingsStore = defineStore('citySettings', () => {
 
   // 更新城市
   const updateCity = async (id, updates) => {
+    console.log('updateCity 被調用:', { id, updates })
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('city_settings')
-        .update({ ...updates, updated_at: new Date() })
+        .update({ ...updates, updated_at: new Date().toISOString() })
         .eq('id', id)
+        .select()
+
+      console.log('Supabase 返回:', { data, error })
 
       if (error) throw error
       return true

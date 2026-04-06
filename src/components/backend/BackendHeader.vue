@@ -65,6 +65,9 @@
         <router-link to="/admin/carousel" class="mobile-nav-item" @click="closeMobileMenu">
           <span class="nav-icon">🎠</span> 轮播图管理
         </router-link>
+        <router-link to="/admin/city-settings" class="mobile-nav-item" @click="closeMobileMenu">
+          <span class="nav-icon">🏙️</span> 城市图片
+        </router-link>
         <router-link to="/admin/dashboard" class="mobile-nav-item" @click="closeMobileMenu">
           <span class="nav-icon">📈</span> 数据看板
         </router-link>

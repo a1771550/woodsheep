@@ -139,7 +139,6 @@ const triggerCityImageUpload = () => {
 }
 
 // 处理文件选择
-// 处理文件选择
 const handleFileSelect = async (event) => {
   const file = event.target.files[0]
   if (!file) return
@@ -160,27 +159,19 @@ const handleFileSelect = async (event) => {
       data: { publicUrl },
     } = supabase.storage.from('property-images').getPublicUrl(fileName)
 
+    // 在 handleFileSelect 中，更新成功后打印日志
     if (currentUploadCity.value) {
-      // ✅ 编辑模式：更新现有城市的 image_url
+      console.log('正在更新城市:', currentUploadCity.value.id, '新图片URL:', publicUrl)
       const success = await citySettingsStore.updateCity(currentUploadCity.value.id, {
         image_url: publicUrl,
       })
-
+      console.log('更新结果:', success)
       if (success) {
-        // ✅ 更新本地数据
-        const index = cities.value.findIndex((c) => c.id === currentUploadCity.value.id)
-        if (index !== -1) {
-          cities.value[index].image_url = publicUrl
-        }
         alert('图片更新成功！')
+        await loadCities()
       } else {
         alert('更新失败，请重试')
       }
-      currentUploadCity.value = null
-    } else {
-      // 添加模式：保存URL
-      newCityImageUrl.value = publicUrl
-      alert('图片上传成功！')
     }
   } catch (error) {
     console.error('上传失败:', error)
