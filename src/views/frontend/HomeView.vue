@@ -172,10 +172,7 @@
             class="city-card"
             @click="filterByCity(city.name)"
           >
-            <div
-              class="city-image"
-              :style="{ backgroundImage: `url(${siteConfig.asset(city.image)})` }"
-            >
+            <div class="city-image" :style="{ backgroundImage: `url(${city.image})` }">
               <div class="city-overlay"></div>
               <div class="city-info">
                 <h3 class="city-name">{{ city.name }}</h3>
