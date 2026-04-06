@@ -1,34 +1,29 @@
 <template>
   <footer class="site-footer">
     <div class="container">
+      <!-- 移動端：簡化佈局，只顯示重要信息 -->
       <div class="footer-content">
-        <!-- 关于我们 -->
+        <!-- 關於我們 -->
         <div class="footer-section">
           <img src="@/assets/logo/woodsheep_logo.jpg" alt="木羊物业" class="footer-logo" />
           <p class="footer-desc">
             木羊物业成立于2020年，专注于珠海、中山地区优质楼盘代理服务。
             我们以专业、诚信、高效为服务宗旨。
           </p>
-          <div class="social-links">
-            <a href="#" class="social-link">📱</a>
-            <a href="#" class="social-link">💬</a>
-            <a href="#" class="social-link">📧</a>
-          </div>
         </div>
 
-        <!-- 快速链接 -->
-        <div class="footer-section">
+        <!-- 快速連結 - 動態生成 -->
+        <div class="footer-section desktop-only">
           <h3 class="footer-title">快速链接</h3>
           <ul class="footer-links">
-            <li><router-link to="/woodsheep">首页</router-link></li>
-            <li><router-link to="/properties">楼盘展示</router-link></li>
-            <li><router-link to="/about">关于我们</router-link></li>
-            <li><router-link to="/contact">联系我们</router-link></li>
+            <li v-for="route in quickLinks" :key="route.path">
+              <router-link :to="route.path">{{ route.title }}</router-link>
+            </li>
           </ul>
         </div>
 
-        <!-- 热门城市 -->
-        <div class="footer-section">
+        <!-- 熱門城市（移動端隱藏） -->
+        <div class="footer-section desktop-only">
           <h3 class="footer-title">热门城市</h3>
           <ul class="footer-links">
             <li><a href="#" @click.prevent="filterByCity('珠海')">珠海楼盘</a></li>
@@ -36,30 +31,40 @@
           </ul>
         </div>
 
-        <!-- 联系方式 -->
+        <!-- 聯繫方式 -->
         <div class="footer-section">
           <h3 class="footer-title">联系我们</h3>
-          <ul class="contact-list">
-            <li>
+          <div class="contact-list">
+            <div class="contact-item">
               <span class="contact-icon">📍</span>
-              <span>香港屯门 / 珠海香洲</span>
-            </li>
-            <li>
+              <span>{{ contactAddress }}</span>
+            </div>
+            <div class="contact-item">
               <span class="contact-icon">📞</span>
-              <a href="tel:0756-xxxxxxx">0756-xxxxxxx</a>
-            </li>
-            <li>
+              <a :href="`tel:${contactPhone}`">{{ contactPhone }}</a>
+            </div>
+            <div class="contact-item">
               <span class="contact-icon">📧</span>
-              <a href="mailto:contact@muyangproperty.com">contact@muyangproperty.com</a>
-            </li>
-            <li>
+              <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>
+            </div>
+            <div class="contact-item">
               <span class="contact-icon">🕒</span>
               <span>周一至周五 9:00-18:00</span>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
       </div>
 
+      <!-- 社交鏈接 -->
+      <div class="social-section">
+        <div class="social-links">
+          <a href="#" class="social-link">📱 微信</a>
+          <a href="#" class="social-link">💬 公众号</a>
+          <a :href="`mailto:${contactEmail}`" class="social-link">📧 邮箱</a>
+        </div>
+      </div>
+
+      <!-- 版權信息 -->
       <div class="footer-bottom">
         <p>&copy; 2026 木羊物业 版权所有 | 粤ICP备xxxxxxxx号</p>
       </div>
@@ -68,31 +73,26 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useSettingsStore } from '@/stores/settingsStore'
+import { frontendRoutes } from '@/router/index.js' // ✅ 導入前台路由
 
 const router = useRouter()
+const settingsStore = useSettingsStore()
 
-const socialLinks = [
-  { name: '微信', icon: '📱', url: '#' },
-  { name: '公众号', icon: '💬', url: '#' },
-  { name: '邮箱', icon: '📧', url: 'mailto:contact@muyangproperty.com' },
-]
+// ✅ 只顯示未被隱藏的路由
+const quickLinks = computed(() => {
+  return frontendRoutes.filter((route) => route.title && !route.meta?.hidden)
+})
 
-const quickLinks = [
-  { path: '/', name: '首页' },
-  { path: '/properties', name: '楼盘展示' },
-  { path: '/about', name: '关于我们' },
-  { path: '/contact', name: '联系我们' },
-]
-
-const hotCities = [{ name: '珠海' }, { name: '中山' }]
-
-const contactInfo = [
-  { icon: '📍', value: '香港屯门 / 珠海香洲', link: null },
-  { icon: '📞', value: '0756-xxxxxxx', link: 'tel:0756-xxxxxxx' },
-  { icon: '📧', value: 'contact@muyangproperty.com', link: 'mailto:contact@muyangproperty.com' },
-  { icon: '🕒', value: '周一至周五 9:00-18:00', link: null },
-]
+const contactPhone = computed(() => settingsStore.settings?.contactPhone || '0756-xxxxxxx')
+const contactEmail = computed(
+  () => settingsStore.settings?.contactEmail || 'contact@muyangproperty.com',
+)
+const contactAddress = computed(
+  () => settingsStore.settings?.contactAddress || '香港屯门 / 珠海香洲',
+)
 
 const filterByCity = (city) => {
   router.push({
@@ -106,7 +106,7 @@ const filterByCity = (city) => {
 .site-footer {
   background: #1a2634;
   color: #e0e0e0;
-  padding: 60px 0 20px;
+  padding: 40px 0 20px;
   margin-top: auto;
 }
 
@@ -116,70 +116,49 @@ const filterByCity = (city) => {
   padding: 0 20px;
 }
 
+/* 桌面版佈局（4列） */
 .footer-content {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1.5fr;
   gap: 40px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
-/* Logo区域 */
+/* Logo 區域 */
 .footer-logo {
   height: 50px;
   width: auto;
   object-fit: contain;
   border-radius: 6px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .footer-desc {
   line-height: 1.8;
-  margin-bottom: 20px;
   color: #b0b7c2;
+  font-size: 14px;
 }
 
-/* 社交链接 */
-.social-links {
-  display: flex;
-  gap: 15px;
-}
-
-.social-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  color: white;
-  text-decoration: none;
-  transition: all 0.3s;
-}
-
-.social-link:hover {
-  background: #2c8bff;
-  transform: translateY(-3px);
-}
-
-/* 链接区域 */
+/* 標題 */
 .footer-title {
   color: white;
   font-size: 18px;
   margin-bottom: 20px;
   position: relative;
+  padding-bottom: 10px;
 }
 
 .footer-title::after {
   content: '';
   position: absolute;
-  bottom: -8px;
-  left: 0 !important;
+  bottom: 0;
+  left: 0;
   width: 40px;
   height: 2px;
   background: #2c8bff;
 }
 
+/* 鏈接列表 */
 .footer-links {
   list-style: none;
   padding: 0;
@@ -199,73 +178,152 @@ const filterByCity = (city) => {
   color: #2c8bff;
 }
 
-/* 联系方式 */
+/* 聯繫方式 - 改為 flex 垂直佈局 */
 .contact-list {
-  list-style: none;
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.contact-list li {
+.contact-item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
-  margin-bottom: 15px;
   color: #b0b7c2;
+  font-size: 14px;
+  line-height: 1.4;
 }
 
 .contact-icon {
   font-size: 18px;
-  flex-shrink: 0;
+  min-width: 28px;
+  text-align: center;
 }
 
-.contact-list a {
+.contact-item a {
   color: #b0b7c2;
   text-decoration: none;
   transition: color 0.3s;
 }
 
-.contact-list a:hover {
+.contact-item a:hover {
   color: #2c8bff;
 }
 
-/* 底部版权 */
-.footer-bottom {
-  padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+/* 社交鏈接區域 */
+.social-section {
   text-align: center;
-  color: #8a949e;
-  font-size: 14px;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 20px;
 }
 
-/* 响应式 */
-@media (max-width: 1024px) {
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.social-link {
+  color: #b0b7c2;
+  text-decoration: none;
+  transition: color 0.3s;
+  padding: 5px 10px;
+}
+
+.social-link:hover {
+  color: #2c8bff;
+}
+
+/* 版權信息 */
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #8a949e;
+  font-size: 12px;
+}
+
+/* ========================================
+   移動端響應式
+   ======================================== */
+@media (max-width: 768px) {
+  .site-footer {
+    padding: 30px 0 15px;
+  }
+
+  /* 移動端改為單列佈局 */
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    margin-bottom: 20px;
+  }
+
+  /* 隱藏桌面版才顯示的區域 */
+  .desktop-only {
+    display: none;
+  }
+
+  /* 移動端 Logo 和描述居中 */
+  .footer-section {
+    text-align: center;
+  }
+
+  .footer-logo {
+    margin: 0 auto 15px;
+  }
+
+  .footer-desc {
+    text-align: center;
+    font-size: 13px;
+  }
+
+  /* 移動端標題居中 */
+  .footer-title {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .footer-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* 移動端聯繫方式居中 */
+  .contact-list {
+    align-items: center;
+  }
+
+  .contact-item {
+    justify-content: center;
+  }
+
+  /* 移動端社交鏈接 */
+  .social-links {
+    gap: 20px;
+  }
+
+  .social-link {
+    font-size: 13px;
+    padding: 4px 8px;
+  }
+
+  /* 移動端版權信息 */
+  .footer-bottom p {
+    font-size: 11px;
+  }
+}
+
+/* 平板設備 */
+@media (min-width: 769px) and (max-width: 1024px) {
   .footer-content {
     grid-template-columns: 1fr 1fr;
     gap: 30px;
   }
-}
 
-@media (max-width: 768px) {
-  .footer-content {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
-  .footer-section:first-child {
-    text-align: center;
-  }
-
-  .social-links {
-    justify-content: center;
-  }
-
-  .footer-title::after {
-    left: 3% !important;
-    transform: translateX(-50%);
-  }
-
-  .contact-list li {
-    justify-content: center;
+  .desktop-only {
+    display: block;
   }
 }
 </style>

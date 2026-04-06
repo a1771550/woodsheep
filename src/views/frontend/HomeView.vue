@@ -261,11 +261,18 @@ import { usePropertyStore } from '@/stores/propertyStore'
 import PropertyCard from '@/components/frontend/PropertyCard.vue'
 import { siteConfig } from '@/config'
 import { useCarouselStore } from '@/stores/carouselStore'
+import { useSettingsStore } from '@/stores/settingsStore'
 
+const settingsStore = useSettingsStore()
 const carouselStore = useCarouselStore()
 const router = useRouter()
 const propertyStore = usePropertyStore()
 const loading = ref(true)
+
+// ✅ 從設定中獲取輪播圖間隔
+const carouselInterval = computed(() => (settingsStore.settings?.carouselInterval || 5) * 1000)
+const autoPlay = computed(() => settingsStore.settings?.carouselAutoPlay ?? true)
+const featuredCount = computed(() => settingsStore.settings?.featuredCount || 4)
 
 // ========================================
 // 1. Hero 轮播数据
@@ -296,13 +303,11 @@ const prevSlide = () => {
   currentSlide.value = (currentSlide.value - 1 + heroSlides.value.length) % heroSlides.value.length
 }
 
-// 自动播放
 const startAutoPlay = () => {
-  if (heroSlides.value.length === 0) return
+  if (!autoPlay.value) return
   if (slideInterval) clearInterval(slideInterval)
-  slideInterval = setInterval(nextSlide, 5000)
+  slideInterval = setInterval(nextSlide, carouselInterval.value)
 }
-
 const stopAutoPlay = () => {
   if (slideInterval) {
     clearInterval(slideInterval)
@@ -345,7 +350,6 @@ const totalAgents = ref(10) // 示例数据
 // ========================================
 // 4. 热门城市数据
 // ========================================
-// 熱門城市數據（從 store 動態計算）
 // 熱門城市數據（從 store 動態獲取所有有樓盤的城市）
 const hotCities = computed(() => {
   const properties = propertyStore.properties || []
@@ -389,9 +393,10 @@ const hotCities = computed(() => {
 // ========================================
 // 5. 精选楼盘
 // ========================================
+// ✅ 精選樓盤數量
 const featuredProperties = computed(() => {
   const props = propertyStore.properties || []
-  return props.slice(0, 4) // 取前4个
+  return props.slice(0, featuredCount.value)
 })
 
 // ========================================

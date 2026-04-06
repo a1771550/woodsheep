@@ -19,13 +19,13 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import BackendHeader from '@/components/backend/BackendHeader.vue'
 import FrontendHeader from '@/components/frontend/FrontendHeader.vue'
 import FrontendFooter from '@/components/frontend/FrontendFooter.vue'
-import { onMounted } from 'vue'
 import { usePropertyStore } from '@/stores/propertyStore'
+import { useSettingsStore } from '@/stores/settingsStore'
 
 export default {
   name: 'App',
@@ -35,6 +35,7 @@ export default {
     FrontendFooter,
   },
   setup() {
+    const settingsStore = useSettingsStore()
     const propertyStore = usePropertyStore()
     const route = useRoute()
     const isBackendRoute = computed(() => {
@@ -42,11 +43,16 @@ export default {
       return route.path.startsWith('/admin')
     })
 
-    onMounted(() => {
-      propertyStore.fetchProperties()
+    // ✅ 正確調用 onMounted
+    onMounted(async () => {
+      console.log('App 初始化：加載設定和樓盤數據...')
+      await settingsStore.fetchSettings()
+      await propertyStore.fetchProperties()
+      console.log('App 初始化完成，當前設定:', settingsStore.settings)
     })
 
     return {
+      onMounted,
       isBackendRoute,
     }
   },

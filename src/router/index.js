@@ -6,27 +6,33 @@ export const frontendRoutes = [
   {
     path: '/',
     name: 'home',
+    title: '首页',
     component: () => import('@/views/frontend/HomeView.vue'),
   },
   {
     path: '/properties',
     name: 'properties',
+    title: '楼盘展示',
     component: () => import('@/views/frontend/PropertyDisplay.vue'),
   },
   {
     path: '/about',
     name: 'about',
+    title: '关于我们',
     component: () => import('@/views/frontend/AboutView.vue'),
   },
   {
     path: '/contact',
     name: 'contact',
+    title: '联系我们',
     component: () => import('@/views/frontend/ContactView.vue'),
   },
   {
     path: '/properties/:id',
     name: 'property-detail',
+    title: '楼盘详情',
     component: () => import('@/views/frontend/PropertyDetail.vue'),
+    meta: { hidden: true }, // ✅ 隱藏，不在導航顯示
   },
 ]
 
@@ -59,6 +65,12 @@ export const adminRoutes = [
     path: '/admin/dashboard',
     name: 'admin-dashboard',
     component: () => import('@/views/backend/DashboardView.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/admin/settings',
+    name: 'admin-settings',
+    component: () => import('@/views/backend/SettingsView.vue'),
     meta: { requiresAuth: true },
   },
 ]

@@ -2,34 +2,41 @@
   <header class="frontend-header">
     <div class="container">
       <div class="header-main">
-        <!-- Logo区域 -->
         <router-link to="/" class="logo-link">
           <img src="@/assets/logo/woodsheep_logo.jpg" alt="木羊物业" class="site-logo" />
           <div class="logo-text">
-            <h1 class="site-title">木羊物业</h1>
-            <p class="site-slogan">专业地产服务，连接美好生活</p>
+            <h1 class="site-title">{{ siteName }}</h1>
+            <p class="site-slogan">{{ siteSlogan }}</p>
           </div>
         </router-link>
-
         <!-- 桌面导航 -->
-        <nav class="desktop-nav">
-          <router-link to="/woodsheep" class="nav-link" exact-active-class="active"
-            >首页</router-link
-          >
+        <!-- <nav class="desktop-nav">
+          <router-link to="/" class="nav-link" exact-active-class="active">首页</router-link>
           <router-link to="/properties" class="nav-link" active-class="active"
             >楼盘展示</router-link
           >
           <router-link to="/about" class="nav-link" active-class="active">关于我们</router-link>
           <router-link to="/contact" class="nav-link" active-class="active">联系我们</router-link>
+        </nav> -->
+        <!-- ✅ 桌面导航 - 動態生成 -->
+        <nav class="desktop-nav">
+          <router-link
+            v-for="route in navRoutes"
+            :key="route.path"
+            :to="route.path"
+            class="nav-link"
+            exact-active-class="active"
+          >
+            {{ route.title }}
+          </router-link>
         </nav>
-
         <!-- 联系方式 -->
         <div class="contact-info">
           <div class="phone-number">
             <span class="phone-icon">📞</span>
             <div class="phone-details">
               <span class="phone-label">咨询热线</span>
-              <a href="tel:0756-xxxxxxx" class="phone-value">0756-xxxxxxx</a>
+              <a :href="`tel:${contactPhone}`" class="phone-value">{{ contactPhone }}</a>
             </div>
           </div>
         </div>
@@ -41,11 +48,9 @@
       </div>
 
       <!-- 移动端导航菜单 -->
-      <transition name="slide">
+      <!-- <transition name="slide">
         <div v-if="showMobileMenu" class="mobile-nav">
-          <router-link to="/woodsheep" class="mobile-nav-link" @click="closeMobileMenu"
-            >首页</router-link
-          >
+          <router-link to="/" class="mobile-nav-link" @click="closeMobileMenu">首页</router-link>
           <router-link to="/properties" class="mobile-nav-link" @click="closeMobileMenu"
             >楼盘展示</router-link
           >
@@ -55,9 +60,27 @@
           <router-link to="/contact" class="mobile-nav-link" @click="closeMobileMenu"
             >联系我们</router-link
           >
-          <div class="mobile-contact">
+          <div class="mobile-contact mobile-nav-link">
             <span class="mobile-phone-label">咨询热线</span>
-            <a href="tel:0756-xxxxxxx" class="mobile-phone-value">0756-xxxxxxx</a>
+            <a :href="`tel:${contactPhone}`" class="mobile-phone-value">{{ contactPhone }}</a>
+          </div>
+        </div>
+      </transition> -->
+      <!-- ✅ 移动端导航菜单 - 動態生成 -->
+      <transition name="slide">
+        <div v-if="showMobileMenu" class="mobile-nav">
+          <router-link
+            v-for="route in navRoutes"
+            :key="route.path"
+            :to="route.path"
+            class="mobile-nav-link"
+            @click="closeMobileMenu"
+          >
+            {{ route.title }}
+          </router-link>
+          <div class="mobile-contact mobile-nav-link">
+            <span class="mobile-phone-label">咨询热线</span>
+            <a :href="`tel:${contactPhone}`" class="mobile-phone-value">{{ contactPhone }}</a>
           </div>
         </div>
       </transition>
@@ -66,16 +89,24 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useSettingsStore } from '@/stores/settingsStore'
+import { frontendRoutes } from '@/router/index.js' // ✅ 導入前台路由
 
+// ✅ 從路由配置生成導航菜單（過濾掉不需要在菜單顯示的路由）
+const navRoutes = computed(() => {
+  return frontendRoutes.filter((route) => route.title && !route.meta?.hidden)
+})
+
+const settingsStore = useSettingsStore()
 const showMobileMenu = ref(false)
 
-const navItems = [
-  { path: '/woodsheep', name: '首页' },
-  { path: '/properties', name: '楼盘展示' },
-  { path: '/about', name: '关于我们' },
-  { path: '/contact', name: '联系我们' },
-]
+// ✅ 從設定中獲取網站信息
+const siteName = computed(() => settingsStore.settings?.siteName || '木羊物业')
+const siteSlogan = computed(
+  () => settingsStore.settings?.siteSlogan || '专业地产服务，连接美好生活',
+)
+const contactPhone = computed(() => settingsStore.settings?.contactPhone || '0756-xxxxxxx')
 
 const toggleMobileMenu = () => {
   showMobileMenu.value = !showMobileMenu.value
@@ -223,7 +254,48 @@ const closeMobileMenu = () => {
 .phone-value:hover {
   color: #0066cc;
 }
+/* 移动端菜单按钮 - 確保顯示 */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  position: relative;
+  width: 44px;
+  height: 44px;
+}
 
+.hamburger {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #333;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+}
+
+.hamburger::before,
+.hamburger::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 2px;
+  background: #333;
+  transition: all 0.3s;
+  left: 0;
+}
+
+.hamburger::before {
+  top: -8px;
+}
+
+.hamburger::after {
+  bottom: -8px;
+}
 /* 响应式 */
 @media (max-width: 768px) {
   .desktop-nav {
@@ -256,6 +328,17 @@ const closeMobileMenu = () => {
 
   .site-logo {
     height: 45px;
+  }
+  .mobile-menu-btn {
+    display: block !important; /* ✅ 加上 !important 確保顯示 */
+  }
+
+  .desktop-nav {
+    display: none !important;
+  }
+
+  .contact-info {
+    display: none !important;
   }
 }
 
