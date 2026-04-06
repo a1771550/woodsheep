@@ -1,1 +1,0 @@
-import{_ as s,c as t,d as o,e as a}from"./index-DUmkpF8f.js";const n={},c={class:"about"};function r(_,e){return t(),o("div",c,[...e[0]||(e[0]=[a("h1",null,"This is an about page",-1)])])}const d=s(n,[["render",r]]);export{d as default};
