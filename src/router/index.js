@@ -73,6 +73,12 @@ export const adminRoutes = [
     component: () => import('@/views/backend/SettingsView.vue'),
     meta: { requiresAuth: true },
   },
+  {
+    path: '/admin/city-settings',
+    name: 'admin-city-settings',
+    component: () => import('@/views/backend/CitySettingsView.vue'),
+    meta: { requiresAuth: true },
+  },
 ]
 
 // 本地開發時使用全部路由

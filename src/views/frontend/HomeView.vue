@@ -126,11 +126,12 @@
     <!-- ======================================== -->
     <section class="featured-properties">
       <div class="container">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title">精选楼盘</h2>
-            <p class="section-subtitle">为您推荐珠海、中山优质房源</p>
-          </div>
+        <!--  -->
+        <div>
+          <h2 class="section-title">精选楼盘</h2>
+          <p class="section-subtitle">为您推荐珠海、中山优质房源</p>
+        </div>
+        <div class="section-footer">
           <router-link to="/properties" class="view-all-link">
             查看全部 <span class="arrow">→</span>
           </router-link>
@@ -262,6 +263,9 @@ import PropertyCard from '@/components/frontend/PropertyCard.vue'
 import { siteConfig } from '@/config'
 import { useCarouselStore } from '@/stores/carouselStore'
 import { useSettingsStore } from '@/stores/settingsStore'
+import { useCitySettingsStore } from '@/stores/citySettingsStore'
+
+const citySettingsStore = useCitySettingsStore()
 
 const settingsStore = useSettingsStore()
 const carouselStore = useCarouselStore()
@@ -350,46 +354,19 @@ const totalAgents = ref(10) // 示例数据
 // ========================================
 // 4. 热门城市数据
 // ========================================
-// 熱門城市數據（從 store 動態獲取所有有樓盤的城市）
 const hotCities = computed(() => {
-  const properties = propertyStore.properties || []
-
-  // 統計每個城市的樓盤數量
-  const cityMap = new Map()
-  properties.forEach((p) => {
-    if (p.city) {
-      const count = cityMap.get(p.city) || 0
-      cityMap.set(p.city, count + 1)
-    }
-  })
-
-  // 將城市名稱轉換為圖片路徑
-  const getCityImage = (cityName) => {
-    // 轉換為拼音（簡單處理）
-    const imageMap = {
-      珠海: 'zhuhai',
-      中山: 'zhongshan',
-      广州: 'guangzhou',
-      深圳: 'shenzhen',
-      横琴: 'hengqin',
-      坦洲: 'tanzhou',
-      香港: 'hongkong',
-      澳门: 'macau',
-    }
-
-    const imageName = imageMap[cityName] || cityName
-    return `images/cities/${imageName}.jpg`
-  }
-
-  // 轉換為數組，按樓盤數量降序排列
-  return Array.from(cityMap.entries())
-    .map(([name, count]) => ({
-      name,
-      count,
-      image: getCityImage(name),
-    }))
-    .sort((a, b) => b.count - a.count)
+  return citySettingsStore.cities.map((city) => ({
+    name: city.city_name,
+    count: getCityCount(city.city_name),
+    image: city.image_url,
+  }))
 })
+
+// 獲取城市樓盤數量
+const getCityCount = (cityName) => {
+  const properties = propertyStore.properties || []
+  return properties.filter((p) => p.city === cityName).length
+}
 // ========================================
 // 5. 精选楼盘
 // ========================================
@@ -457,6 +434,7 @@ const latestNews = [
 onMounted(async () => {
   await propertyStore.fetchProperties()
   await carouselStore.fetchSlides()
+  await citySettingsStore.fetchCities()
   loading.value = false
   // 延遲啟動輪播，確保 DOM 更新完成
   setTimeout(() => {
@@ -799,6 +777,12 @@ section {
   justify-content: space-between;
   align-items: flex-end;
   margin-bottom: 40px;
+}
+
+.section-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.3rem;
 }
 
 .section-title {

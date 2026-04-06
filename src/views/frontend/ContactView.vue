@@ -40,15 +40,26 @@
               </div>
             </div>
 
-            <div class="info-item">
+            <!-- ✅ 微信客服区域 -->
+            <div class="info-item wechat-item">
               <div class="info-icon">💬</div>
               <div class="info-details">
-                <h3>在线咨询</h3>
-                <div class="social-links">
-                  <a href="#" class="social-link">微信客服</a>
-                  <a href="#" class="social-link">公众号</a>
-                  <a href="#" class="social-link">在线留言</a>
+                <h3>微信客服</h3>
+                <div class="wechat-container">
+                  <div class="qrcode-wrapper" @click="showQRCodeModal = true">
+                    <img
+                      src="@/assets/images/wechat-qrcode.jpg"
+                      alt="微信二维码"
+                      class="wechat-qrcode"
+                      @error="handleImageError"
+                    />
+                    <div class="qrcode-hover">点击放大</div>
+                  </div>
+                  <div class="wechat-info">
+                    <p class="wechat-id">微信号: <span>muyang_property</span></p>
+                  </div>
                 </div>
+                <p class="info-note">扫码或复制微信号添加微信好友</p>
               </div>
             </div>
           </div>
@@ -100,11 +111,10 @@
         </div>
       </div>
 
-      <!-- 地圖區域（可選） -->
+      <!-- 地圖區域 -->
       <div class="map-section">
         <h2>我们的位置</h2>
         <div class="map-container">
-          <!-- 可以使用 Google Maps 或百度地圖嵌入 -->
           <div class="map-placeholder">
             <div class="map-icon">🗺️</div>
             <p>珠海市香洲区九洲大道中1009号</p>
@@ -114,7 +124,16 @@
       </div>
     </div>
 
-    <!-- 成功提示彈窗 -->
+    <!-- 二维码放大彈窗 -->
+    <div v-if="showQRCodeModal" class="qrcode-modal" @click="showQRCodeModal = false">
+      <div class="modal-content" @click.stop>
+        <img src="@/assets/images/wechat-qrcode.jpg" alt="微信二维码" @error="handleImageError" />
+        <button class="modal-close" @click="showQRCodeModal = false">×</button>
+        <p class="modal-tip">长按识别二维码添加微信</p>
+      </div>
+    </div>
+
+    <!-- 成功提示 -->
     <div v-if="showSuccess" class="success-toast">✅ 留言已发送！我们会尽快与您联系。</div>
   </div>
 </template>
@@ -145,6 +164,12 @@ const formData = ref({
 
 const submitting = ref(false)
 const showSuccess = ref(false)
+const showQRCodeModal = ref(false)
+
+// 圖片加載失敗處理
+const handleImageError = (event) => {
+  event.target.src = 'https://via.placeholder.com/200x200?text=微信二维码'
+}
 
 // 提交表單
 const handleSubmit = async () => {
@@ -258,7 +283,7 @@ const handleSubmit = async () => {
 .info-details h3 {
   font-size: 18px;
   color: #333;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 }
 
 .info-value {
@@ -278,20 +303,75 @@ const handleSubmit = async () => {
   margin-top: 5px;
 }
 
-.social-links {
-  display: flex;
-  gap: 15px;
+/* ✅ 微信区域样式 */
+.wechat-item {
+  border-top: 1px solid #eee;
+  padding-top: 15px;
   margin-top: 5px;
 }
 
-.social-link {
-  color: #2c8bff;
-  text-decoration: none;
-  font-size: 14px;
+.wechat-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 8px;
 }
 
-.social-link:hover {
-  text-decoration: underline;
+.qrcode-wrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.wechat-qrcode {
+  width: 80px;
+  height: 80px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+
+.wechat-qrcode:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.qrcode-hover {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.qrcode-wrapper:hover .qrcode-hover {
+  opacity: 1;
+}
+
+.wechat-info {
+  flex: 1;
+}
+
+.wechat-id {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.wechat-id span {
+  color: #2c8bff;
+  font-weight: 500;
+  user-select: all;
+  cursor: pointer;
 }
 
 /* 右側聯繫表單 */
@@ -366,7 +446,53 @@ const handleSubmit = async () => {
   transform: none;
 }
 
-/* 地圖區域 */
+/* 二维码弹窗 */
+.qrcode-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 90%;
+}
+
+.modal-content img {
+  max-width: 80vw;
+  max-height: 70vh;
+  border-radius: 8px;
+}
+
+.modal-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+.modal-tip {
+  margin-top: 15px;
+  color: #666;
+  font-size: 14px;
+}
+
+/* 地图区域 */
 .map-section {
   margin-top: 20px;
 }
@@ -449,7 +575,7 @@ const handleSubmit = async () => {
   }
 }
 
-/* 響應式 */
+/* 响应式 */
 @media (max-width: 768px) {
   .contact-wrapper {
     grid-template-columns: 1fr;
@@ -470,10 +596,24 @@ const handleSubmit = async () => {
     padding: 20px;
   }
 
+  .wechat-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .wechat-qrcode {
+    width: 100px;
+    height: 100px;
+  }
+
   .success-toast {
     white-space: normal;
     text-align: center;
     max-width: 90%;
+  }
+
+  .modal-content img {
+    max-width: 95vw;
   }
 }
 </style>

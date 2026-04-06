@@ -34,6 +34,36 @@
       </div>
     </div>
 
+    <div class="settings-section">
+      <h3>微信设置</h3>
+      <div class="settings-form">
+        <div class="form-group">
+          <label>微信二维码</label>
+          <div class="qrcode-upload">
+            <div v-if="settings.wechatQRCode" class="qrcode-preview">
+              <img :src="settings.wechatQRCode" alt="微信二维码" />
+              <button type="button" class="btn-remove" @click="removeWechatQRCode">删除</button>
+            </div>
+            <div class="upload-area" @click="triggerWechatUpload">
+              <span>📷 点击上传二维码</span>
+              <input
+                type="file"
+                ref="wechatInput"
+                accept="image/*"
+                style="display: none"
+                @change="uploadWechatQRCode"
+              />
+            </div>
+          </div>
+          <p class="hint-text">建议尺寸：200x200像素，JPG或PNG格式</p>
+        </div>
+        <div class="form-group">
+          <label>微信号</label>
+          <input v-model="settings.wechatId" type="text" placeholder="例如：muyang_property" />
+        </div>
+      </div>
+    </div>
+
     <!-- 輪播圖設定 -->
     <div class="settings-section">
       <h3>轮播图设置</h3>
@@ -116,6 +146,40 @@
 import { ref, onMounted } from 'vue'
 import { useSettingsStore } from '@/stores/settingsStore'
 import { usePropertyStore } from '@/stores/propertyStore'
+
+const wechatInput = ref(null)
+
+const triggerWechatUpload = () => {
+  wechatInput.value?.click()
+}
+
+const uploadWechatQRCode = async (event) => {
+  const file = event.target.files[0]
+  if (!file) return
+
+  const fileName = `wechat_qrcode_${Date.now()}.jpg`
+
+  try {
+    const { data, error } = await supabase.storage.from('property-images').upload(fileName, file)
+
+    if (error) throw error
+
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from('property-images').getPublicUrl(fileName)
+
+    settings.value.wechatQRCode = publicUrl
+    alert('二维码上传成功！')
+  } catch (error) {
+    console.error('上传失败:', error)
+    alert('上传失败')
+  }
+  event.target.value = ''
+}
+
+const removeWechatQRCode = () => {
+  settings.value.wechatQRCode = ''
+}
 
 const settingsStore = useSettingsStore()
 const propertyStore = usePropertyStore()

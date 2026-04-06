@@ -48,6 +48,26 @@
               <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a>
             </div>
             <div class="contact-item">
+              <div class="contact-icon">💬</div>
+              <div class="contact-details">
+                <h3>微信客服</h3>
+                <div class="qrcode-container">
+                  <img
+                    src="@/assets/images/wechat-qrcode.jpg"
+                    alt="微信二维码"
+                    class="wechat-qrcode"
+                    @click="showQRCodeModal = true"
+                  />
+                  <p>点击二维码放大</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 二维码放大彈窗 -->
+            <div v-if="showQRCodeModal" class="qrcode-modal" @click="showQRCodeModal = false">
+              <img src="@/assets/images/wechat-qrcode.jpg" alt="微信二维码" />
+            </div>
+            <div class="contact-item">
               <span class="contact-icon">🕒</span>
               <span>周一至周五 9:00-18:00</span>
             </div>
@@ -77,7 +97,9 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSettingsStore } from '@/stores/settingsStore'
 import { frontendRoutes } from '@/router/index.js' // ✅ 導入前台路由
+import { ref } from 'vue'
 
+const showQRCodeModal = ref(false)
 const router = useRouter()
 const settingsStore = useSettingsStore()
 
@@ -244,7 +266,37 @@ const filterByCity = (city) => {
   color: #8a949e;
   font-size: 12px;
 }
+.wechat-qrcode {
+  width: 120px;
+  height: 120px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: transform 0.3s;
+}
 
+.wechat-qrcode:hover {
+  transform: scale(1.05);
+}
+
+.qrcode-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.qrcode-modal img {
+  max-width: 80%;
+  max-height: 80%;
+  border-radius: 12px;
+}
 /* ========================================
    移動端響應式
    ======================================== */

@@ -22,6 +22,10 @@
           <span class="nav-icon">🎠</span>
           <span class="nav-label">轮播图管理</span>
         </router-link>
+        <router-link to="/admin/city-settings" class="nav-item" active-class="active">
+          <span class="nav-icon">🏙️</span>
+          <span class="nav-label">城市图片</span>
+        </router-link>
         <router-link to="/admin/dashboard" class="nav-item" active-class="active">
           <span class="nav-icon">📈</span>
           <span class="nav-label">数据看板</span>
