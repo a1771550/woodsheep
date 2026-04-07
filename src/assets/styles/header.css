@@ -70,7 +70,7 @@
 
 .mobile-nav-link:hover,
 .mobile-nav-link.active {
-  color: #2c8bff;
+  color: var(--color-primary);
 }
 
 .mobile-contact {
@@ -89,7 +89,7 @@
 .mobile-phone-value {
   font-size: 18px;
   font-weight: 600;
-  color: #2c8bff;
+  color: var(--color-primary);
   text-decoration: none;
 }
 

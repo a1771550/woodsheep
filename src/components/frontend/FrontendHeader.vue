@@ -196,11 +196,11 @@ const closeMobileMenu = () => {
 }
 
 .nav-link:hover {
-  color: #2c8bff;
+  color: var(--color-primary);
 }
 
 .nav-link.active {
-  color: #2c8bff;
+  color: var(--color-primary);
 }
 
 .nav-link.active::after {
@@ -210,7 +210,7 @@ const closeMobileMenu = () => {
   left: 0;
   right: 0;
   height: 3px;
-  background: #2c8bff;
+  background: var(--color-primary);
   border-radius: 3px;
 }
 
@@ -226,7 +226,7 @@ const closeMobileMenu = () => {
   background: #f8f9fa;
   padding: 10px 15px;
   border-radius: 8px;
-  border-left: 4px solid #2c8bff;
+  border-left: 4px solid var(--color-primary);
 }
 
 .phone-icon {
@@ -247,12 +247,12 @@ const closeMobileMenu = () => {
 .phone-value {
   font-size: 16px;
   font-weight: 600;
-  color: #2c8bff;
+  color: var(--color-primary);
   text-decoration: none;
 }
 
 .phone-value:hover {
-  color: #0066cc;
+  color: var(--color-primary-dark);
 }
 /* 移动端菜单按钮 - 確保顯示 */
 .mobile-menu-btn {

@@ -237,8 +237,8 @@ onMounted(async () => {
 }
 
 .search-box input:focus {
-  border-color: #2c8bff;
-  box-shadow: 0 0 0 3px rgba(44, 139, 255, 0.1);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
 }
 
 .search-box button {
@@ -271,11 +271,11 @@ onMounted(async () => {
 }
 
 .city-tab:hover {
-  background: #e7f1ff;
+  background: var(--color-primary-light);
 }
 
 .city-tab.active {
-  background: #2c8bff;
+  background: var(--color-primary);
   color: white;
 }
 
@@ -298,7 +298,7 @@ onMounted(async () => {
   width: 50px;
   height: 50px;
   border: 3px solid #f3f3f3;
-  border-top: 3px solid #2c8bff;
+  border-top: 3px solid var(--color-primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 20px;
@@ -340,9 +340,9 @@ onMounted(async () => {
 }
 
 .page-btn:hover:not(:disabled) {
-  background: #2c8bff;
+  background: var(--color-primary);
   color: white;
-  border-color: #2c8bff;
+  border-color: var(--color-primary);
 }
 
 .page-btn:disabled {

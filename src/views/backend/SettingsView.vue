@@ -382,8 +382,8 @@ onMounted(async () => {
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #2c8bff;
-  box-shadow: 0 0 0 3px rgba(44, 139, 255, 0.1);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
 }
 
 .checkbox-label {
@@ -530,7 +530,7 @@ onMounted(async () => {
 }
 
 .theme-preview.default {
-  background: linear-gradient(135deg, #2c8bff, #0066cc);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
 }
 
 .theme-preview.warm {

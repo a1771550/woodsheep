@@ -238,7 +238,7 @@ const contactAddress = computed(
   transform: translateX(-50%);
   width: 60px;
   height: 3px;
-  background: #2c8bff;
+  background: var(--color-primary);
 }
 
 /* 公司簡介 */
@@ -321,7 +321,7 @@ const contactAddress = computed(
 .step-number {
   width: 30px;
   height: 30px;
-  background: #2c8bff;
+  background: var(--color-primary);
   color: white;
   border-radius: 50%;
   display: flex;
@@ -349,7 +349,7 @@ const contactAddress = computed(
 
 .step-arrow {
   font-size: 24px;
-  color: #2c8bff;
+  color: var(--color-primary);
 }
 
 /* 合作夥伴 */
@@ -368,7 +368,7 @@ const contactAddress = computed(
 }
 
 .partner-item:hover {
-  background: #e7f1ff;
+  background: var(--color-primary-light);
   transform: translateY(-3px);
 }
 
@@ -384,7 +384,7 @@ const contactAddress = computed(
 
 /* 聯繫我們 */
 .contact-card {
-  background: linear-gradient(135deg, #2c8bff, #0066cc);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   color: white;
   padding: 40px;
   border-radius: 16px;
@@ -435,7 +435,7 @@ const contactAddress = computed(
   display: inline-block;
   padding: 12px 30px;
   background: white;
-  color: #2c8bff;
+  color: var(--color-primary);
   border: none;
   border-radius: 30px;
   font-size: 16px;

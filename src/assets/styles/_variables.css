@@ -1,48 +1,8 @@
 /* ========================================
-   Color Variables
+   _variables.css - 非顏色變數
    ======================================== */
 
 :root {
-  /* Primary Colors - 木羊物业品牌色 */
-  --color-primary: #2c8bff;
-  --color-primary-dark: #0066cc;
-  --color-primary-light: #e7f1ff;
-
-  /* Secondary Colors - 木/羊主题色 */
-  --color-wood: #8b4513; /* 木 - 深棕色 */
-  --color-sheep: #f8b400; /* 羊 - 金色 */
-
-  /* Status Colors */
-  --color-success: #28a745;
-  --color-warning: #ffc107;
-  --color-danger: #dc3545;
-  --color-info: #17a2b8;
-
-  /* Neutral Colors */
-  --color-white: #ffffff;
-  --color-gray-100: #f8f9fa;
-  --color-gray-200: #e9ecef;
-  --color-gray-300: #dee2e6;
-  --color-gray-400: #ced4da;
-  --color-gray-500: #adb5bd;
-  --color-gray-600: #6c757d;
-  --color-gray-700: #495057;
-  --color-gray-800: #343a40;
-  --color-gray-900: #212529;
-  --color-black: #000000;
-
-  /* Background Colors */
-  --bg-body: #f8f9fa;
-  --bg-card: #ffffff;
-  --bg-header: #ffffff;
-  --bg-footer: #1a2634;
-
-  /* Text Colors */
-  --text-primary: #333333;
-  --text-secondary: #666666;
-  --text-light: #999999;
-  --text-white: #ffffff;
-
   /* ========================================
      Typography
      ======================================== */

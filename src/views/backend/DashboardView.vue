@@ -289,7 +289,7 @@ onMounted(() => {
 .stat-number {
   font-size: 28px;
   font-weight: 700;
-  color: #2c8bff;
+  color: var(--color-primary);
 }
 
 .stat-label {
@@ -355,7 +355,7 @@ onMounted(() => {
 
 .bar {
   height: 24px;
-  background: linear-gradient(90deg, #2c8bff, #0066cc);
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark));
   border-radius: 12px;
   transition: width 0.5s ease;
 }
@@ -386,7 +386,7 @@ onMounted(() => {
 }
 
 .status-pill.clickable:hover {
-  background: #e7f1ff;
+  background: var(--color-primary-light);
   transform: translateY(-2px);
 }
 
@@ -414,7 +414,7 @@ onMounted(() => {
 
 .status-count {
   font-weight: 600;
-  color: #2c8bff;
+  color: var(--color-primary);
   margin-left: 5px;
 }
 
@@ -438,7 +438,7 @@ onMounted(() => {
 }
 
 .property-name {
-  color: #2c8bff;
+  color: var(--color-primary);
   font-weight: 500;
 }
 
@@ -450,7 +450,7 @@ onMounted(() => {
 }
 
 .property-name.clickable:hover {
-  text-decoration-color: #2c8bff;
+  text-decoration-color: var(--color-primary);
 }
 
 .btn-edit-small {

@@ -367,7 +367,7 @@ const cancelForm = () => {
 }
 
 .page-header h2 {
-  color: var(--color-heading, #2c8bff);
+  color: var(--color-heading, --color-primary);
   margin-bottom: 10px;
   font-size: 1.8em;
 }
@@ -450,8 +450,8 @@ const cancelForm = () => {
 .form-input:focus,
 .form-select:focus {
   outline: none;
-  border-color: var(--color-primary, #2c8bff);
-  box-shadow: 0 0 0 3px rgba(44, 139, 255, 0.1);
+  border-color: var(--color-primary, --color-primary);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
   background: var(--color-background, white);
 }
 
@@ -492,8 +492,8 @@ const cancelForm = () => {
 }
 
 .tag {
-  background: var(--color-primary-light, #e7f1ff);
-  color: var(--color-primary, #0066cc);
+  background: var(--color-primary-light);
+  color: var(--color-primary, var(--color-primary-dark));
   padding: 4px 12px;
   border-radius: 20px;
   font-size: 0.85em;
@@ -502,7 +502,7 @@ const cancelForm = () => {
 }
 
 .tag:hover {
-  background: var(--color-primary, #2c8bff);
+  background: var(--color-primary);
   color: white;
   transform: translateY(-1px);
 }
@@ -530,12 +530,12 @@ const cancelForm = () => {
 }
 
 .btn-primary {
-  background: var(--color-primary, #2c8bff);
+  background: var(--color-primary);
   color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: var(--color-primary-dark, #0066cc);
+  background: var(--color-primary-dark);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(44, 139, 255, 0.2);
 }

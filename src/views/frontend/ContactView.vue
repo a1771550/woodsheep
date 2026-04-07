@@ -260,7 +260,7 @@ const handleSubmit = async () => {
   left: 0;
   width: 50px;
   height: 3px;
-  background: #2c8bff;
+  background: var(--color-primary);
 }
 
 .info-list {
@@ -288,7 +288,7 @@ const handleSubmit = async () => {
 
 .info-value {
   font-size: 16px;
-  color: #2c8bff;
+  color: var(--color-primary);
   text-decoration: none;
   font-weight: 500;
 }
@@ -368,7 +368,7 @@ const handleSubmit = async () => {
 }
 
 .wechat-id span {
-  color: #2c8bff;
+  color: var(--color-primary);
   font-weight: 500;
   user-select: all;
   cursor: pointer;
@@ -419,13 +419,13 @@ const handleSubmit = async () => {
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #2c8bff;
-  box-shadow: 0 0 0 3px rgba(44, 139, 255, 0.1);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
 }
 
 .btn-submit {
   padding: 14px 30px;
-  background: #2c8bff;
+  background: var(--color-primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -436,7 +436,7 @@ const handleSubmit = async () => {
 }
 
 .btn-submit:hover {
-  background: #0066cc;
+  background: var(--color-primary-dark);
   transform: translateY(-2px);
 }
 
@@ -513,7 +513,7 @@ const handleSubmit = async () => {
   transform: translateX(-50%);
   width: 60px;
   height: 3px;
-  background: #2c8bff;
+  background: var(--color-primary);
 }
 
 .map-container {

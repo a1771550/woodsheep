@@ -180,7 +180,7 @@ const triggerFileInput = () => {
 }
 
 .upload-area:hover {
-  border-color: #2c8bff;
+  border-color: var(--color-primary);
   background: #f0f7ff;
 }
 

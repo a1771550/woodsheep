@@ -187,7 +187,7 @@ onMounted(() => {
   background: none;
   border: none;
   font-size: 16px;
-  color: #2c8bff;
+  color: var(--color-primary);
   cursor: pointer;
   padding: 10px 0;
   margin-bottom: 20px;
@@ -331,7 +331,7 @@ onMounted(() => {
 
 .thumbnail.active {
   opacity: 1;
-  border: 2px solid #2c8bff;
+  border: 2px solid var(--color-primary);
 }
 
 .no-image {
@@ -472,7 +472,7 @@ onMounted(() => {
 
 .btn-outline:hover {
   background: white;
-  color: #2c8bff;
+  color: var(--color-primary);
 }
 
 /* 加載和錯誤狀態 */
@@ -487,7 +487,7 @@ onMounted(() => {
   width: 50px;
   height: 50px;
   border: 3px solid #f3f3f3;
-  border-top: 3px solid #2c8bff;
+  border-top: 3px solid var(--color-primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 20px;

@@ -197,7 +197,7 @@ const filterByCity = (city) => {
 }
 
 .footer-links a:hover {
-  color: #2c8bff;
+  color: var(--color-primary);
 }
 
 /* 聯繫方式 - 改為 flex 垂直佈局 */
@@ -229,7 +229,7 @@ const filterByCity = (city) => {
 }
 
 .contact-item a:hover {
-  color: #2c8bff;
+  color: var(--color-primary);
 }
 
 /* 社交鏈接區域 */
@@ -255,7 +255,7 @@ const filterByCity = (city) => {
 }
 
 .social-link:hover {
-  color: #2c8bff;
+  color: var(--color-primary);
 }
 
 /* 版權信息 */

@@ -34,6 +34,11 @@ export const frontendRoutes = [
     component: () => import('@/views/frontend/PropertyDetail.vue'),
     meta: { hidden: true }, // ✅ 隱藏，不在導航顯示
   },
+  {
+    path: '/news',
+    name: 'news',
+    component: () => import('@/views/frontend/NewsView.vue'),
+  },
 ]
 
 // 後台路由 (管理系統)

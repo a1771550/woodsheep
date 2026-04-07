@@ -665,7 +665,7 @@ section {
 .filter-select:focus {
   border-color: var(--color-primary);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(44, 139, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
 }
 
 .btn-filter {

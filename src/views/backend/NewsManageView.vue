@@ -964,7 +964,7 @@ onMounted(() => {
 }
 
 .city-badge {
-  background: #e7f1ff;
+  background: var(--color-primary-light);
   color: var(--color-primary);
   padding: 2px 8px;
   border-radius: 12px;

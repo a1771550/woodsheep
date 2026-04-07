@@ -622,7 +622,7 @@ input:checked + .slider:before {
 }
 
 .upload-area:hover {
-  background: #e7f1ff;
+  background: var(--color-primary-light);
   border-color: var(--color-primary-dark);
 }
 
@@ -667,7 +667,7 @@ input:checked + .slider:before {
 }
 
 .btn-save:hover {
-  background: #0066cc;
+  background: var(--color-primary-dark);
 }
 
 .btn-save:disabled {

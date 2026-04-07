@@ -522,7 +522,7 @@ onMounted(() => {
 }
 
 .upload-area:hover {
-  background: #e7f1ff;
+  background: var(--color-primary-light);
 }
 
 .image-preview {
@@ -577,7 +577,7 @@ onMounted(() => {
   width: 40px;
   height: 40px;
   border: 3px solid #f3f3f3;
-  border-top: 3px solid #2c8bff;
+  border-top: 3px solid var(--color-primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 20px;
