@@ -15,6 +15,11 @@ export const getImageUrl = (url) => {
 
 // 格式化日期
 export const formatDate = (dateString) => {
+  if (!dateString) return '-'
+  return dateString
+}
+// 格式化日期
+export const formatDateTime = (dateString) => {
   if (!dateString) return '未知'
   const date = new Date(dateString)
   const year = date.getFullYear()

@@ -101,7 +101,7 @@
                 {{ property.status }}
               </span>
             </td>
-            <td>{{ formatDate(property.updated_at || property.created_at) }}</td>
+            <td>{{ formatDateTime(property.updated_at || property.created_at) }}</td>
             <td>
               <button class="btn-edit-small" @click="goToEdit(property.id)">编辑</button>
             </td>
@@ -119,7 +119,7 @@
                 {{ property.status }}
               </span>
             </td>
-            <td>{{ formatDate(property.created_at) }}</td>
+            <td>{{ formatDateTime(property.created_at) }}</td>
             <td class="action-cell">
               <button class="btn-edit-icon" @click="goToEdit(property.id)" title="编辑">✏️</button>
             </td>
@@ -134,7 +134,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { usePropertyStore } from '@/stores/propertyStore'
-import { formatDate } from '@/utils/helpers'
+import { formatDateTime } from '@/utils/helpers'
 
 const router = useRouter()
 const propertyStore = usePropertyStore()

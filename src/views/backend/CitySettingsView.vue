@@ -50,6 +50,42 @@
       <p>暂无城市数据，点击「添加城市」开始创建</p>
     </div>
 
+    <!-- 分頁控制 -->
+    <div class="pagination" v-if="totalPages > 1">
+      <button class="page-btn" :disabled="currentPage === 1" @click="goToPage(currentPage - 1)">
+        上一页
+      </button>
+
+      <div class="page-numbers">
+        <button
+          v-for="page in visiblePages"
+          :key="page"
+          :class="['page-num', { active: currentPage === page }]"
+          @click="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+      </div>
+
+      <button
+        class="page-btn"
+        :disabled="currentPage === totalPages"
+        @click="goToPage(currentPage + 1)"
+      >
+        下一页
+      </button>
+
+      <select v-model="pageSize" @change="handlePageSizeChange" class="page-size-select">
+        <option :value="10">10条/页</option>
+        <option :value="20">20条/页</option>
+        <option :value="50">50条/页</option>
+      </select>
+
+      <span class="page-info">
+        共 {{ totalCount }} 条，第 {{ currentPage }} / {{ totalPages }} 页
+      </span>
+    </div>
+
     <!-- 加载状态 -->
     <div v-if="loading" class="loading-state">
       <div class="spinner"></div>
@@ -104,7 +140,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useCitySettingsStore } from '@/stores/citySettingsStore'
 import { supabase } from '@/services/supabase'
 import ConfirmDialog from '@/components/backend/ConfirmDialog.vue'
@@ -112,29 +148,58 @@ import { handleImageError } from '@/utils/helpers'
 
 const citySettingsStore = useCitySettingsStore()
 
-// 状态
-const loading = ref(false)
-const saving = ref(false)
-const cities = ref([])
-const showAddModal = ref(false)
-const showDeleteConfirm = ref(false)
-const cityToDelete = ref(null)
+// 狀態
+const loading = computed(() => citySettingsStore.loading)
+const cities = computed(() => citySettingsStore.cities)
+const currentPage = computed(() => citySettingsStore.currentPage)
+const totalPages = computed(() => citySettingsStore.totalPages)
+const totalCount = computed(() => citySettingsStore.totalCount)
+const pageSize = computed({
+  get: () => citySettingsStore.pageSize,
+  set: (val) => citySettingsStore.setPageSize(val),
+})
 
-// 新城市表单
-const newCityName = ref('')
-const newCityImageUrl = ref('')
-const fileInput = ref(null)
-const currentUploadCity = ref(null)
+console.log('pageSize:', pageSize.value)
 
-// 加载数据
-const loadCities = async () => {
-  loading.value = true
-  await citySettingsStore.fetchAllCities()
-  cities.value = citySettingsStore.cities
-  // console.log('加载完成，当前城市列表:', cities.value)
-  loading.value = false
+// 顯示的頁碼
+const visiblePages = computed(() => {
+  const delta = 2
+  const range = []
+  const start = Math.max(1, currentPage.value - delta)
+  const end = Math.min(totalPages.value, currentPage.value + delta)
+
+  for (let i = start; i <= end; i++) {
+    range.push(i)
+  }
+
+  if (start > 1) {
+    range.unshift(1)
+    if (start > 2) range.splice(1, 0, '...')
+  }
+
+  if (end < totalPages.value) {
+    if (end < totalPages.value - 1) range.push('...')
+    range.push(totalPages.value)
+  }
+
+  return range
+})
+
+// 跳轉到指定頁
+const goToPage = async (page) => {
+  if (page < 1 || page > totalPages.value) return
+  await citySettingsStore.fetchAllCitiesPaginated(page)
 }
 
+// 改變每頁數量
+const handlePageSizeChange = async () => {
+  await citySettingsStore.setPageSize(pageSize.value)
+}
+
+// 加載數據
+const loadCities = async () => {
+  await citySettingsStore.fetchAllCitiesPaginated(1)
+}
 // 触发文件选择
 const triggerCityImageUpload = () => {
   fileInput.value?.click()
@@ -628,6 +693,75 @@ input:checked + .slider:before {
   margin: 0 auto 20px;
 }
 
+/* 添加分頁樣式 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 30px;
+  padding: 20px 0;
+  flex-wrap: wrap;
+}
+
+.page-btn {
+  padding: 8px 16px;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 8px;
+}
+
+.page-num {
+  width: 36px;
+  height: 36px;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.page-num.active {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.page-num:hover:not(.active) {
+  background: #e9ecef;
+}
+
+.page-size-select {
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+}
+
+.page-info {
+  font-size: 14px;
+  color: #666;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -650,6 +784,27 @@ input:checked + .slider:before {
 
   .btn-add {
     width: 100%;
+  }
+
+  .pagination {
+    gap: 10px;
+  }
+
+  .page-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .page-num {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .page-info {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
   }
 }
 </style>

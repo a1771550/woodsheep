@@ -95,11 +95,63 @@ export const useCitySettingsStore = defineStore('citySettings', () => {
     }
   }
 
+  // 分頁參數
+  const currentPage = ref(1)
+  const totalPages = ref(1)
+  const totalCount = ref(0)
+  const pageSize = ref(10)
+
+  // 分頁獲取所有城市
+  const fetchAllCitiesPaginated = async (page = 1) => {
+    loading.value = true
+    currentPage.value = page
+
+    try {
+      // 先獲取總數
+      const { count, error: countError } = await supabase
+        .from('city_settings')
+        .select('*', { count: 'exact', head: true })
+
+      if (countError) throw countError
+      totalCount.value = count
+      totalPages.value = Math.ceil(count / pageSize.value)
+
+      // 獲取分頁數據
+      const from = (page - 1) * pageSize.value
+      const to = from + pageSize.value - 1
+
+      const { data, error } = await supabase
+        .from('city_settings')
+        .select('*')
+        .order('display_order', { ascending: true })
+        .range(from, to)
+
+      if (error) throw error
+      cities.value = data || []
+    } catch (error) {
+      console.error('載入失敗:', error)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // 改變每頁數量
+  const setPageSize = async (size) => {
+    pageSize.value = size
+    await fetchAllCitiesPaginated(1)
+  }
+
   return {
     cities,
     loading,
+    currentPage,
+    totalPages,
+    totalCount,
+    pageSize,
     fetchCities,
     fetchAllCities,
+    fetchAllCitiesPaginated,
+    setPageSize,
     updateCity,
     addCity,
     deleteCity,

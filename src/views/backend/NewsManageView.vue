@@ -10,18 +10,47 @@
       <table class="news-table">
         <thead>
           <tr>
-            <th style="width: 50px">ID</th>
-            <th>标题</th>
-            <th style="width: 100px">城市</th>
-            <th style="width: 100px">发布日期</th>
-            <th style="width: 80px">状态</th>
-            <th style="width: 80px">精选</th>
+            <th style="width: 50px" @click="toggleSort('id')" class="sortable">
+              ID <span class="sort-icon">{{ getSortIcon('id') }}</span>
+            </th>
+            <th style="width: 80px">图片</th>
+            <th @click="toggleSort('title')" class="sortable">
+              标题 <span class="sort-icon">{{ getSortIcon('title') }}</span>
+            </th>
+            <th @click="toggleSort('city')" class="sortable">
+              城市 <span class="sort-icon">{{ getSortIcon('city') }}</span>
+            </th>
+            <th @click="toggleSort('published_date')" class="sortable">
+              发布日期 <span class="sort-icon">{{ getSortIcon('published_date') }}</span>
+            </th>
+            <th @click="toggleSort('updated_at')" class="sortable">
+              更新日期 <span class="sort-icon">{{ getSortIcon('updated_at') }}</span>
+            </th>
+            <th @click="toggleSort('is_active')" class="sortable">
+              状态 <span class="sort-icon">{{ getSortIcon('is_active') }}</span>
+            </th>
+            <th @click="toggleSort('is_featured')" class="sortable">
+              精选 <span class="sort-icon">{{ getSortIcon('is_featured') }}</span>
+            </th>
             <th style="width: 100px">操作</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="article in allArticles" :key="article.id">
             <td>{{ article.id }}</td>
+            <td class="image-cell">
+              <div class="table-image-wrapper">
+                <img
+                  :src="article.image_url || defaultImage"
+                  :alt="article.title"
+                  class="table-thumbnail"
+                  @error="handleImageError"
+                />
+                <button class="table-upload-btn" @click="openImageUpload(article)" title="更换图片">
+                  📷
+                </button>
+              </div>
+            </td>
             <td class="title-cell">
               <a :href="article.source_url" target="_blank" class="article-link">
                 {{ article.title }}
@@ -29,6 +58,7 @@
             </td>
             <td>{{ article.city || '-' }}</td>
             <td>{{ formatDate(article.published_date) }}</td>
+            <td>{{ formatDateTime(article.updated_at) }}</td>
             <td>
               <button
                 :class="['status-btn', article.is_active ? 'active' : 'inactive']"
@@ -103,13 +133,47 @@
         </div>
       </div>
     </div>
+    <!-- 分頁控制 -->
+    <div class="pagination" v-if="totalPages > 1">
+      <button class="page-btn" :disabled="currentPage === 1" @click="goToPage(currentPage - 1)">
+        上一页
+      </button>
 
-    <!-- 空状态 -->
+      <div class="page-numbers">
+        <button
+          v-for="page in visiblePages"
+          :key="page"
+          :class="['page-num', { active: currentPage === page }]"
+          @click="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+      </div>
+
+      <button
+        class="page-btn"
+        :disabled="currentPage === totalPages"
+        @click="goToPage(currentPage + 1)"
+      >
+        下一页
+      </button>
+
+      <select v-model="pageSize" @change="handlePageSizeChange" class="page-size-select">
+        <option :value="10">10条/页</option>
+        <option :value="20">20条/页</option>
+        <option :value="50">50条/页</option>
+      </select>
+
+      <span class="page-info">
+        共 {{ totalCount }} 条，第 {{ currentPage }} / {{ totalPages }} 页
+      </span>
+    </div>
+
+    <!-- 空状态和加载状态 -->
     <div v-if="allArticles.length === 0 && !loading" class="empty-state">
       <p>暂无新闻，点击「添加新闻」开始创建</p>
     </div>
 
-    <!-- 加载状态 -->
     <div v-if="loading" class="loading-state">
       <div class="spinner"></div>
       <p>加载中...</p>
@@ -213,18 +277,28 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useNewsStore } from '@/stores/newsStore'
 import { supabase } from '@/services/supabase'
 import ConfirmDialog from '@/components/backend/ConfirmDialog.vue'
-import { handleImageError, defaultImage } from '@/utils/helpers'
+import { handleImageError, defaultImage, formatDate, formatDateTime } from '@/utils/helpers'
 
 const newsStore = useNewsStore()
 
 // 状态
-const loading = ref(false)
+const loading = computed(() => newsStore.loading)
+const allArticles = computed(() => newsStore.allArticles)
+const currentPage = computed(() => newsStore.currentPage)
+const totalPages = computed(() => newsStore.totalPages)
+const totalCount = computed(() => newsStore.totalCount)
+const pageSize = computed({
+  get: () => newsStore.pageSize,
+  set: (val) => newsStore.setPageSize(val),
+})
+// 排序狀態
+const sortField = ref('updated_at')
+const sortOrder = ref('desc')
 const saving = ref(false)
-const allArticles = ref([])
 const showModal = ref(false)
 const isEdit = ref(false)
 const showDeleteConfirm = ref(false)
@@ -245,23 +319,28 @@ const formData = ref({
   is_featured: false,
 })
 
-// 加载数据
-const loadArticles = async () => {
-  loading.value = true
-  await newsStore.fetchAllArticles()
-  // 為沒有圖片的文章添加默認圖片（可選）
-  allArticles.value = newsStore.allArticles.map((article) => ({
-    ...article,
-    image_url: article.image_url || null, // 保持 null，讓模板處理默認顯示
-  }))
-  // console.log('加载完成，当前文章列表:', allArticles.value)
-  loading.value = false
-}
+// 可排序的列
+const sortableColumns = [
+  { field: 'id', label: 'ID' },
+  { field: 'title', label: '标题' },
+  { field: 'city', label: '城市' },
+  { field: 'published_date', label: '发布日期' },
+  { field: 'updated_at', label: '更新日期' },
+  { field: 'is_active', label: '状态' },
+  { field: 'is_featured', label: '精选' },
+]
 
-// 格式化日期
-const formatDate = (dateString) => {
-  if (!dateString) return '-'
-  return dateString
+// 切換排序
+const toggleSort = (field) => {
+  if (sortField.value === field) {
+    // 相同字段，切換升降序
+    sortOrder.value = sortOrder.value === 'desc' ? 'asc' : 'desc'
+  } else {
+    // 不同字段，設置新字段，默認降序
+    sortField.value = field
+    sortOrder.value = 'desc'
+  }
+  loadArticles()
 }
 
 // 打开添加弹窗
@@ -459,6 +538,96 @@ const executeDelete = async () => {
   closeDeleteConfirm()
 }
 
+// 顯示的頁碼
+const visiblePages = computed(() => {
+  const delta = 2
+  const range = []
+  const start = Math.max(1, currentPage.value - delta)
+  const end = Math.min(totalPages.value, currentPage.value + delta)
+
+  for (let i = start; i <= end; i++) {
+    range.push(i)
+  }
+
+  if (start > 1) {
+    range.unshift(1)
+    if (start > 2) range.splice(1, 0, '...')
+  }
+
+  if (end < totalPages.value) {
+    if (end < totalPages.value - 1) range.push('...')
+    range.push(totalPages.value)
+  }
+
+  return range
+})
+
+// 排序處理 - 切換排序時重置到第一頁
+const handleSort = async (field) => {
+  let newOrder = 'desc'
+  if (sortField.value === field) {
+    newOrder = sortOrder.value === 'desc' ? 'asc' : 'desc'
+  } else {
+    sortField.value = field
+    newOrder = 'desc'
+  }
+  sortOrder.value = newOrder
+
+  // 重新加載數據（第一頁，新排序）
+  await loadArticles(1)
+}
+
+// 獲取排序圖標
+const getSortIcon = (field) => {
+  if (sortField.value !== field) return '↕️'
+  return sortOrder.value === 'desc' ? '↓' : '↑'
+}
+
+// 跳轉到指定頁
+const goToPage = async (page) => {
+  if (page < 1 || page > totalPages.value) return
+  await newsStore.fetchArticlesPaginated(page, sortField.value, sortOrder.value)
+}
+
+// 改變每頁數量
+const handlePageSizeChange = async () => {
+  await newsStore.setPageSize(pageSize.value)
+}
+
+// 加載數據（帶排序和分頁）
+const loadArticles = async (page = 1) => {
+  loading.value = true
+
+  try {
+    // 先獲取總數
+    const { count, error: countError } = await supabase
+      .from('news_articles')
+      .select('*', { count: 'exact', head: true })
+
+    if (countError) throw countError
+    newsStore.totalCount = count
+    newsStore.totalPages = Math.ceil(count / pageSize.value)
+    newsStore.currentPage = page
+
+    // 獲取分頁數據
+    const from = (page - 1) * pageSize.value
+    const to = from + pageSize.value - 1
+
+    const { data, error } = await supabase
+      .from('news_articles')
+      .select('*')
+      .order(sortField.value, { ascending: sortOrder.value === 'asc' })
+      .range(from, to)
+
+    if (error) throw error
+    newsStore.allArticles = data || []
+  } catch (error) {
+    console.error('載入失敗:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
 onMounted(() => {
   loadArticles()
 })
@@ -536,7 +705,46 @@ onMounted(() => {
 .article-link:hover {
   text-decoration: underline;
 }
+/* 表格圖片列 */
+.image-cell {
+  width: 80px;
+  text-align: center;
+}
 
+.table-image-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.table-thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: #f0f0f0;
+}
+
+.table-upload-btn {
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  background: rgba(var(--color-primary-rgb), 0.9);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.table-upload-btn:hover {
+  background: var(--color-primary-dark);
+  transform: scale(1.1);
+}
 /* 状态按钮 */
 .status-btn {
   padding: 4px 12px;
@@ -589,6 +797,92 @@ onMounted(() => {
 .btn-delete {
   background: #dc3545;
   color: white;
+}
+/* 分頁樣式 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 30px;
+  padding: 20px 0;
+  flex-wrap: wrap;
+}
+
+.page-btn {
+  padding: 8px 16px;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 8px;
+}
+
+.page-num {
+  width: 36px;
+  height: 36px;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.page-num.active {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.page-num:hover:not(.active) {
+  background: #e9ecef;
+}
+
+.page-size-select {
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+}
+
+.page-info {
+  font-size: 14px;
+  color: #666;
+}
+
+/* 可排序的列 */
+.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.3s;
+}
+
+.sortable:hover {
+  background: #e9ecef;
+}
+
+.sort-icon {
+  display: inline-block;
+  margin-left: 5px;
+  font-size: 12px;
+  opacity: 0.6;
 }
 
 /* ========================================
@@ -921,6 +1215,27 @@ onMounted(() => {
 
   .form-row {
     grid-template-columns: 1fr;
+  }
+
+  .pagination {
+    gap: 10px;
+  }
+
+  .page-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .page-num {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .page-info {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
   }
 }
 </style>

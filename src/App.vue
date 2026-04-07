@@ -18,7 +18,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import BackendHeader from '@/components/backend/BackendHeader.vue'
@@ -27,52 +27,38 @@ import FrontendFooter from '@/components/frontend/FrontendFooter.vue'
 import { usePropertyStore } from '@/stores/propertyStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 
-export default {
-  name: 'App',
-  components: {
-    BackendHeader,
-    FrontendHeader,
-    FrontendFooter,
+const route = useRoute()
+const settingsStore = useSettingsStore()
+const propertyStore = usePropertyStore()
+
+// 當前主題
+const currentTheme = computed(() => {
+  return settingsStore.settings?.theme || 'default'
+})
+
+// 是否為後台路由
+const isBackendRoute = computed(() => {
+  console.log('当前路由路径:', route.path)
+  return route.path.startsWith('/admin')
+})
+
+// 應用主題到 body
+watch(
+  currentTheme,
+  (theme) => {
+    document.body.classList.remove('theme-default', 'theme-warm', 'theme-forest')
+    document.body.classList.add(`theme-${theme}`)
   },
-  setup() {
-    // ✅ 當前主題
-    const currentTheme = computed(() => {
-      return settingsStore.settings?.theme || 'default'
-    })
+  { immediate: true },
+)
 
-    const settingsStore = useSettingsStore()
-    const propertyStore = usePropertyStore()
-    const route = useRoute()
-    const isBackendRoute = computed(() => {
-      console.log('当前路由路径:', route.path) // 调试输出当前路由路径
-      return route.path.startsWith('/admin')
-    })
-
-    // ✅ 正確調用 onMounted
-    onMounted(async () => {
-      console.log('App 初始化：加載設定和樓盤數據...')
-      await settingsStore.fetchSettings()
-      await propertyStore.fetchProperties()
-      console.log('App 初始化完成，當前設定:', settingsStore.settings)
-    })
-
-    // ✅ 應用主題到 body
-    watch(
-      currentTheme,
-      (theme) => {
-        // 移除所有主題 class
-        document.body.classList.remove('theme-default', 'theme-warm', 'theme-dark', 'theme-forest')
-        document.body.classList.add(`theme-${theme}`)
-      },
-      { immediate: true },
-    )
-    return {
-      watch,
-      onMounted,
-      isBackendRoute,
-    }
-  },
-}
+// 初始化
+onMounted(async () => {
+  console.log('App 初始化：加載設定和樓盤數據...')
+  await settingsStore.fetchSettings()
+  await propertyStore.fetchProperties()
+  console.log('App 初始化完成，當前設定:', settingsStore.settings)
+})
 </script>
 
 <style>

@@ -64,7 +64,7 @@
           <div class="info-item">
             <span class="info-label">最後更新</span>
             <span class="info-value">{{
-              formatDate(property.updated_at || property.created_at)
+              formatDateTime(property.updated_at || property.created_at)
             }}</span>
           </div>
         </div>
@@ -113,7 +113,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { usePropertyStore } from '@/stores/propertyStore'
-import { formatDate } from '@/utils/helpers'
+import { formatDateTime } from '@/utils/helpers'
 import WhatsAppLink from '@/components/common/WhatsAppLink.vue'
 
 const route = useRoute()
