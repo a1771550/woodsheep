@@ -170,7 +170,7 @@ export default {
   margin: 0;
   font-size: 20px;
   font-weight: 600;
-  color: #2c8bff;
+  color: var(--color-primary);
 }
 
 .site-subtitle {
@@ -200,13 +200,13 @@ export default {
 }
 
 .nav-item:hover {
-  background: #f8f9fa;
-  color: #2c8bff;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
 }
 
 .nav-item.active {
-  background: #e7f1ff;
-  color: #2c8bff;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
   font-weight: 500;
 }
 
@@ -232,7 +232,7 @@ export default {
 .admin-avatar {
   width: 36px;
   height: 36px;
-  background: #2c8bff;
+  background: var(--color-primary);
   border-radius: 50%;
   display: flex;
   align-items: center;

@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import BackendHeader from '@/components/backend/BackendHeader.vue'
 import FrontendHeader from '@/components/frontend/FrontendHeader.vue'
@@ -35,6 +35,11 @@ export default {
     FrontendFooter,
   },
   setup() {
+    // ✅ 當前主題
+    const currentTheme = computed(() => {
+      return settingsStore.settings?.theme || 'default'
+    })
+
     const settingsStore = useSettingsStore()
     const propertyStore = usePropertyStore()
     const route = useRoute()
@@ -51,7 +56,18 @@ export default {
       console.log('App 初始化完成，當前設定:', settingsStore.settings)
     })
 
+    // ✅ 應用主題到 body
+    watch(
+      currentTheme,
+      (theme) => {
+        // 移除所有主題 class
+        document.body.classList.remove('theme-default', 'theme-warm', 'theme-dark', 'theme-forest')
+        document.body.classList.add(`theme-${theme}`)
+      },
+      { immediate: true },
+    )
     return {
+      watch,
       onMounted,
       isBackendRoute,
     }

@@ -234,7 +234,7 @@ onMounted(() => {
 
 .card-header {
   padding: 20px;
-  background: linear-gradient(135deg, #2c8bff, #0066cc);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   color: white;
   display: flex;
   justify-content: space-between;
@@ -270,8 +270,8 @@ onMounted(() => {
 }
 
 .tag {
-  background: #e7f1ff;
-  color: #0066cc;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
   padding: 4px 10px;
   border-radius: 15px;
   font-size: 0.85em;
@@ -336,7 +336,7 @@ onMounted(() => {
 
 .btn-primary {
   padding: 12px 30px;
-  background: #2c8bff;
+  background: var(--color-primary);
   color: white;
   border: none;
   border-radius: 6px;
@@ -346,7 +346,7 @@ onMounted(() => {
 }
 
 .btn-primary:hover {
-  background: #0066cc;
+  background: var(--color-primary-dark);
 }
 
 .status-badge {

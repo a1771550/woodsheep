@@ -34,6 +34,28 @@
       </div>
     </div>
 
+    <!-- 主题设置 -->
+    <div class="settings-section">
+      <h3>主题设置</h3>
+      <div class="settings-form">
+        <div class="form-group">
+          <label>网站主题</label>
+          <div class="theme-selector">
+            <div
+              v-for="theme in themes"
+              :key="theme.value"
+              :class="['theme-option', { active: settings.theme === theme.value }]"
+              @click="settings.theme = theme.value"
+            >
+              <div :class="['theme-preview', theme.value]"></div>
+              <span>{{ theme.name }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 微信设置 -->
     <div class="settings-section">
       <h3>微信设置</h3>
       <div class="settings-form">
@@ -147,6 +169,12 @@ import { ref, onMounted } from 'vue'
 import { useSettingsStore } from '@/stores/settingsStore'
 import { usePropertyStore } from '@/stores/propertyStore'
 
+const themes = [
+  { name: '默认（蓝色）', value: 'default' },
+  { name: '暖色（橙色）', value: 'warm' },
+  { name: '深色', value: 'dark' },
+  { name: '森林', value: 'forest' },
+]
 const wechatInput = ref(null)
 
 const triggerWechatUpload = () => {
@@ -465,6 +493,52 @@ onMounted(async () => {
 .message.warning {
   background: #ffc107;
   color: #333;
+}
+
+.theme-selector {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.theme-option {
+  text-align: center;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.theme-option:hover {
+  background: var(--color-primary-light);
+}
+
+.theme-option.active {
+  background: var(--color-primary-light);
+  border: 2px solid var(--color-primary);
+}
+
+.theme-preview {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.theme-preview.default {
+  background: linear-gradient(135deg, #2c8bff, #0066cc);
+}
+
+.theme-preview.warm {
+  background: linear-gradient(135deg, #b86500, #8a4c00);
+}
+
+.theme-preview.dark {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+}
+
+.theme-preview.forest {
+  background: linear-gradient(135deg, #2d6a4f, #1b4332);
 }
 
 @keyframes slideIn {

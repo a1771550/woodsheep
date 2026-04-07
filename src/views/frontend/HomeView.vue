@@ -126,7 +126,6 @@
     <!-- ======================================== -->
     <section class="featured-properties">
       <div class="container">
-        <!--  -->
         <div>
           <h2 class="section-title">精选楼盘</h2>
           <p class="section-subtitle">为您推荐珠海、中山优质房源</p>
@@ -224,11 +223,11 @@
     <!-- ======================================== -->
     <section class="latest-news">
       <div class="container">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title">市场动态</h2>
-            <p class="section-subtitle">最新楼市资讯</p>
-          </div>
+        <div>
+          <h2 class="section-title">市场动态</h2>
+          <p class="section-subtitle">最新楼市资讯</p>
+        </div>
+        <div class="section-footer">
           <router-link to="/news" class="view-all-link">
             更多资讯 <span class="arrow">→</span>
           </router-link>
@@ -459,6 +458,10 @@ const viewProperty = (property) => {
 </script>
 
 <style scoped>
+.home {
+  position: relative; /* ✅ 添加這行 */
+}
+
 section {
   background: #f5f7fa; /* 統一淺灰色背景 */
 }
@@ -469,13 +472,26 @@ section {
   position: relative;
   height: 80vh;
   min-height: 600px;
-  overflow: hidden;
+  overflow: visible;
+  margin-bottom: 0;
 }
 
 .carousel-container {
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+}
+
+/* 輪播指示器 - 提高位置，避免被篩選欄遮擋 */
+.carousel-indicators {
+  position: absolute;
+  bottom: 100px; /* ✅ 提高位置，從 30px 改為 100px */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 15;
 }
 
 .carousel-images {
@@ -527,7 +543,7 @@ section {
 .slide-tag {
   display: inline-block;
   padding: 6px 16px;
-  background: rgba(44, 139, 255, 0.9);
+  background: rgba(var(--color-primary-rgb), 0.9);
   border-radius: 30px;
   font-size: 14px;
   font-weight: 500;
@@ -548,17 +564,6 @@ section {
   margin-bottom: 40px; /* ✅ 把原來的 margin-bottom 從 30px 改為 40px */
   opacity: 0.95;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* 轮播指示器 */
-.carousel-indicators {
-  position: absolute;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 12px;
-  z-index: 10;
 }
 
 .indicator {
@@ -628,17 +633,10 @@ section {
 /* ========================================
    2. 快捷筛选栏
    ======================================== */
-.quick-filter {
-  margin-top: -40px;
-  position: relative;
-  z-index: 20;
-  margin-bottom: 40px;
-}
-
 .filter-card {
   background: white;
   border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
   padding: 24px;
 }
 
@@ -707,6 +705,21 @@ section {
   border-radius: 8px;
 }
 
+.quick-filter {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -50px;
+  z-index: 20;
+  padding: 0 20px;
+}
+
+.quick-filter .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0;
+}
 /* ========================================
    3. 数据看板
    ======================================== */
@@ -1098,6 +1111,17 @@ section {
 /* ========================================
    响应式设计
    ======================================== */
+/* 桌面端 - 更大重疊 */
+@media (min-width: 769px) {
+  .quick-filter {
+    bottom: -70px;
+  }
+
+  .carousel-indicators {
+    bottom: 110px;
+  }
+}
+
 @media (max-width: 1200px) {
   .property-grid,
   .cities-grid,
@@ -1169,11 +1193,6 @@ section {
     text-align: center;
   }
 
-  .hero-carousel {
-    height: 60vh;
-    min-height: 500px;
-  }
-
   .slide-title {
     font-size: 36px;
   }
@@ -1210,12 +1229,6 @@ section {
     grid-template-columns: 1fr;
   }
 
-  /* .section-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  } */
-
   .filter-tabs {
     overflow-x: auto;
     padding-bottom: 4px;
@@ -1226,17 +1239,31 @@ section {
     white-space: nowrap;
   }
 
-  .quick-filter {
-    margin-top: 1rem;
-    padding: 0 20px;
-  }
-
   .carousel-content {
-    padding-top: 80px; /* ✅ 小屏幕上增加更多頂部空間 */
+    /* padding-top: 80px; ✅ 小屏幕上增加更多頂部空間 */
+    padding-top: 60px;
   }
 
   .slide-subtitle {
     margin-bottom: 30px; /* ✅ 小屏幕上適當減少 */
+  }
+
+  .hero-carousel {
+    height: 70vh;
+    min-height: 500px;
+  }
+
+  .quick-filter {
+    bottom: -30px;
+    padding: 0 16px;
+  }
+
+  .filter-card {
+    padding: 16px;
+  }
+
+  .carousel-indicators {
+    bottom: 80px;
   }
 }
 

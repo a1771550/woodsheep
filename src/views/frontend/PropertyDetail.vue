@@ -222,7 +222,7 @@ onMounted(() => {
 }
 
 .city-badge {
-  background: #2c8bff;
+  background: var(--color-primary);
   color: white;
   padding: 6px 16px;
   border-radius: 30px;
@@ -394,8 +394,8 @@ onMounted(() => {
 }
 
 .tag {
-  background: #e7f1ff;
-  color: #2c8bff;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
   padding: 6px 14px;
   border-radius: 20px;
   font-size: 13px;
@@ -419,7 +419,7 @@ onMounted(() => {
 
 /* 聯繫卡片 */
 .contact-card {
-  background: linear-gradient(135deg, #2c8bff, #0066cc);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   color: white;
   padding: 30px;
   border-radius: 12px;
@@ -455,7 +455,7 @@ onMounted(() => {
 
 .btn-primary {
   background: white;
-  color: #2c8bff;
+  color: var(--color-primary);
   border: none;
 }
 

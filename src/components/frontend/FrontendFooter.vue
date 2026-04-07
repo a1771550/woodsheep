@@ -177,7 +177,7 @@ const filterByCity = (city) => {
   left: 0;
   width: 40px;
   height: 2px;
-  background: #2c8bff;
+  background: var(--color-primary);
 }
 
 /* 鏈接列表 */

@@ -166,7 +166,7 @@ const closeMobileMenu = () => {
   margin: 0;
   font-size: 28px;
   font-weight: 700;
-  color: #2c8bff;
+  color: var(--color-primary);
   letter-spacing: 1px;
 }
 

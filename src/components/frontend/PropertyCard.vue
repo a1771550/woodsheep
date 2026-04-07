@@ -145,7 +145,7 @@ const viewDetail = (e) => {
 }
 
 .city-badge {
-  background: rgba(44, 139, 255, 0.9);
+  background: rgba(var(--color-primary-rgb), 0.9);
   color: white;
   padding: 4px 12px;
   border-radius: 20px;
@@ -248,8 +248,8 @@ const viewDetail = (e) => {
 }
 
 .tag {
-  background: #e7f1ff;
-  color: #2c8bff;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
   padding: 4px 10px;
   border-radius: 15px;
   font-size: 12px;
@@ -279,7 +279,7 @@ const viewDetail = (e) => {
 
 .btn-detail {
   padding: 6px 16px;
-  background: #2c8bff;
+  background: var(--color-primary);
   color: white;
   border: none;
   border-radius: 20px;
@@ -289,7 +289,7 @@ const viewDetail = (e) => {
 }
 
 .btn-detail:hover {
-  background: #0066cc;
+  background: var(--color-primary-dark);
 }
 
 /* 響應式 */

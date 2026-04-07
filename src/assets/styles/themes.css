@@ -1,0 +1,68 @@
+/* ========================================
+   主題變數定義
+   ======================================== */
+
+/* 默認主題（藍色） */
+:root,
+.theme-default {
+  --color-primary: #2c8bff;
+  --color-primary-dark: #0066cc;
+  --color-primary-light: #e7f1ff;
+  --color-primary-rgb: 44, 139, 255;
+  --color-secondary: #f8b400;
+  --bg-body: #f8f9fa;
+  --bg-card: #ffffff;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --border-color: #eeeeee;
+  --shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* 暖色主題（橙色） */
+.theme-warm {
+  --color-primary: #B86500;
+  --color-primary-dark: #8a4c00;
+  --color-primary-light: #FEF3E6;
+  --color-primary-rgb: 184, 101, 0;
+  --color-secondary: #2c8bff;
+  --bg-body: #F7EBDC;
+  --bg-card: #ffffff;
+  --text-primary: #4a3b2c;
+  --text-secondary: #8b7355;
+  --border-color: #e8dccc;
+  --shadow: 0 6px 20px rgba(184, 101, 0, 0.08);
+  --shadow-hover: 0 12px 30px rgba(184, 101, 0, 0.12);
+}
+
+/* 深色主題 */
+.theme-dark {
+  --color-primary: #4a9eff;
+  --color-primary-dark: #2c6bcc;
+  --color-primary-light: #1a2a3a;
+  --color-primary-rgb: 74, 158, 255;
+  --color-secondary: #f8b400;
+  --bg-body: #1a1a2e;
+  --bg-card: #16213e;
+  --text-primary: #eeeeee;
+  --text-secondary: #aaaaaa;
+  --border-color: #2a2a4a;
+  --shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* 森林主題 */
+.theme-forest {
+  --color-primary: #2d6a4f;
+  --color-primary-dark: #1b4332;
+  --color-primary-light: #d8f3dc;
+  --color-primary-rgb: 45, 106, 79;
+  --color-secondary: #f8b400;
+  --bg-body: #f0f7f0;
+  --bg-card: #ffffff;
+  --text-primary: #2d3e2d;
+  --text-secondary: #5a6e5a;
+  --border-color: #d0e0d0;
+  --shadow: 0 6px 20px rgba(45, 106, 79, 0.08);
+  --shadow-hover: 0 12px 30px rgba(45, 106, 79, 0.12);
+}

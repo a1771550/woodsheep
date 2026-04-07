@@ -342,7 +342,7 @@ onMounted(() => {
 
 .btn-add {
   padding: 10px 20px;
-  background: #2c8bff;
+  background: var(--color-primary);
   color: white;
   border: none;
   border-radius: 6px;
@@ -350,7 +350,7 @@ onMounted(() => {
 }
 
 .btn-add:hover {
-  background: #0066cc;
+  background: var(--color-primary-dark);
 }
 
 /* 轮播图列表 */
@@ -514,7 +514,7 @@ onMounted(() => {
 .upload-area {
   margin-top: 8px;
   padding: 10px;
-  border: 1px dashed #2c8bff;
+  border: 1px dashed var(--color-primary);
   border-radius: 6px;
   text-align: center;
   cursor: pointer;
@@ -556,7 +556,7 @@ onMounted(() => {
 }
 
 .btn-save {
-  background: #2c8bff;
+  background: var(--color-primary);
   color: white;
 }
 
