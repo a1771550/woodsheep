@@ -79,6 +79,12 @@ export const adminRoutes = [
     component: () => import('@/views/backend/CitySettingsView.vue'),
     meta: { requiresAuth: true },
   },
+  {
+    path: '/admin/news',
+    name: 'admin-news',
+    component: () => import('@/views/backend/NewsManageView.vue'),
+    meta: { requiresAuth: true },
+  },
 ]
 
 // 本地開發時使用全部路由

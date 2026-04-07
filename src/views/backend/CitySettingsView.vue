@@ -108,6 +108,7 @@ import { ref, onMounted } from 'vue'
 import { useCitySettingsStore } from '@/stores/citySettingsStore'
 import { supabase } from '@/services/supabase'
 import ConfirmDialog from '@/components/backend/ConfirmDialog.vue'
+import { handleImageError } from '@/utils/helpers'
 
 const citySettingsStore = useCitySettingsStore()
 
@@ -130,6 +131,7 @@ const loadCities = async () => {
   loading.value = true
   await citySettingsStore.fetchAllCities()
   cities.value = citySettingsStore.cities
+  // console.log('加载完成，当前城市列表:', cities.value)
   loading.value = false
 }
 
@@ -281,12 +283,6 @@ const executeDelete = async () => {
   closeDeleteConfirm()
 }
 
-// 图片加载失败处理
-const handleImageError = (event) => {
-  event.target.src =
-    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='120' viewBox='0 0 200 120'%3E%3Crect width='200' height='120' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-size='14'%3E暂无图片%3C/text%3E%3C/svg%3E"
-}
-
 onMounted(() => {
   loadCities()
 })
@@ -312,7 +308,7 @@ onMounted(() => {
 
 .btn-add {
   padding: 10px 20px;
-  background: #2c8bff;
+  background: var(--color-primary);
   color: white;
   border: none;
   border-radius: 6px;
@@ -321,7 +317,7 @@ onMounted(() => {
 }
 
 .btn-add:hover {
-  background: #0066cc;
+  background: var(--color-primary-dark);
 }
 
 /* 城市列表 */
@@ -441,7 +437,7 @@ onMounted(() => {
 }
 
 input:checked + .slider {
-  background-color: #2c8bff;
+  background-color: var(--color-primary);
 }
 
 input:checked + .slider:before {
@@ -478,7 +474,7 @@ input:checked + .slider:before {
 .btn-order-up:hover:not(:disabled),
 .btn-order-down:hover:not(:disabled) {
   background: #f0f0f0;
-  border-color: #2c8bff;
+  border-color: var(--color-primary);
 }
 
 .btn-order-up:disabled,
@@ -551,7 +547,7 @@ input:checked + .slider:before {
 }
 
 .upload-area {
-  border: 1px dashed #2c8bff;
+  border: 1px dashed var(--color-primary);
   border-radius: 6px;
   padding: 15px;
   text-align: center;
@@ -562,7 +558,7 @@ input:checked + .slider:before {
 
 .upload-area:hover {
   background: #e7f1ff;
-  border-color: #0066cc;
+  border-color: var(--color-primary-dark);
 }
 
 .image-preview {
@@ -598,7 +594,7 @@ input:checked + .slider:before {
 
 .btn-save {
   padding: 8px 20px;
-  background: #2c8bff;
+  background: var(--color-primary);
   color: white;
   border: none;
   border-radius: 6px;
@@ -626,7 +622,7 @@ input:checked + .slider:before {
   width: 40px;
   height: 40px;
   border: 3px solid #f3f3f3;
-  border-top: 3px solid #2c8bff;
+  border-top: 3px solid var(--color-primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 20px;

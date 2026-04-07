@@ -30,6 +30,10 @@
           <span class="nav-icon">📈</span>
           <span class="nav-label">数据看板</span>
         </router-link>
+        <router-link to="/admin/news" class="nav-item" active-class="active">
+          <span class="nav-icon">📰</span>
+          <span class="nav-label">新闻管理</span>
+        </router-link>
         <router-link to="/admin/settings" class="nav-item" active-class="active">
           <span class="nav-icon">⚙️</span>
           <span class="nav-label">系统设置</span>
@@ -67,6 +71,9 @@
         </router-link>
         <router-link to="/admin/city-settings" class="mobile-nav-item" @click="closeMobileMenu">
           <span class="nav-icon">🏙️</span> 城市图片
+        </router-link>
+        <router-link to="/admin/news" class="mobile-nav-item" @click="closeMobileMenu">
+          <span class="nav-icon">📰</span> 新闻管理
         </router-link>
         <router-link to="/admin/dashboard" class="mobile-nav-item" @click="closeMobileMenu">
           <span class="nav-icon">📈</span> 数据看板

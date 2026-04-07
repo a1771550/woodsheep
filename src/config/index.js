@@ -4,6 +4,8 @@ export const siteConfig = {
 
   // 资源路径助手
   asset(path) {
+    // ✅ 添加空值檢查
+    if (!path) return ''
     // 移除开头的斜杠避免重复
     const cleanPath = path.replace(/^\//, '')
     return `${this.base}${cleanPath}`

@@ -236,7 +236,11 @@
         <div class="news-grid">
           <article v-for="news in latestNews" :key="news.id" class="news-card">
             <div class="news-image">
-              <img :src="siteConfig.asset(news.image)" :alt="news.title" />
+              <img
+                :src="siteConfig.asset(news.image)"
+                :alt="news.title"
+                @error="handleImageError"
+              />
             </div>
             <div class="news-content">
               <span class="news-date">{{ news.date }}</span>
@@ -260,6 +264,11 @@ import { siteConfig } from '@/config'
 import { useCarouselStore } from '@/stores/carouselStore'
 import { useSettingsStore } from '@/stores/settingsStore'
 import { useCitySettingsStore } from '@/stores/citySettingsStore'
+import { useNewsStore } from '@/stores/newsStore'
+import { handleImageError } from '@/utils/helpers'
+
+const newsStore = useNewsStore()
+const latestNews = ref([])
 
 const citySettingsStore = useCitySettingsStore()
 
@@ -395,42 +404,14 @@ const brandPromises = [
 ]
 
 // ========================================
-// 8. 最新资讯
-// ========================================
-const latestNews = [
-  {
-    id: 1,
-    title: '深中通道2024年通车，中山楼市升温',
-    excerpt: '深中通道通车在即，中山楼盘咨询量上涨50%...',
-    date: '2026-02-10',
-    image: 'images/news/shenzhong.jpg',
-    link: '/news/1',
-  },
-  {
-    id: 2,
-    title: '珠海横琴粤澳深度合作区新政解读',
-    excerpt: '企业所得税优惠、人才引进政策全面升级...',
-    date: '2026-02-08',
-    image: 'images/news/hengqin.jpg',
-    link: '/news/2',
-  },
-  {
-    id: 3,
-    title: '香港购房团重启，中山珠海成热点',
-    excerpt: '通关后首个香港购房考察团到访...',
-    date: '2026-02-05',
-    image: 'images/news/hongkong.jpg',
-    link: '/news/3',
-  },
-]
-
-// ========================================
 // 生命周期
 // ========================================
 onMounted(async () => {
   await propertyStore.fetchProperties()
   await carouselStore.fetchSlides()
   await citySettingsStore.fetchCities()
+  await newsStore.fetchArticles(3)
+  latestNews.value = newsStore.articles
   loading.value = false
   // 延遲啟動輪播，確保 DOM 更新完成
   setTimeout(() => {
@@ -458,40 +439,17 @@ const viewProperty = (property) => {
 </script>
 
 <style scoped>
-.home {
-  position: relative; /* ✅ 添加這行 */
-}
-
 section {
   background: #f5f7fa; /* 統一淺灰色背景 */
 }
 /* ========================================
    1. Hero 轮播样式
    ======================================== */
-.hero-carousel {
-  position: relative;
-  height: 80vh;
-  min-height: 600px;
-  overflow: visible;
-  margin-bottom: 0;
-}
-
 .carousel-container {
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
-}
-
-/* 輪播指示器 - 提高位置，避免被篩選欄遮擋 */
-.carousel-indicators {
-  position: absolute;
-  bottom: 100px; /* ✅ 提高位置，從 30px 改為 100px */
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 12px;
-  z-index: 15;
 }
 
 .carousel-images {
@@ -615,7 +573,7 @@ section {
 
 .carousel-prev:hover,
 .carousel-next:hover {
-  background: rgba(44, 139, 255, 0.8);
+  background: rgba(var(--color-primary-rgb), 0.8);
   border-color: white;
 }
 
@@ -630,16 +588,27 @@ section {
   opacity: 0;
 }
 
+.hero-carousel {
+  position: relative;
+  height: 80vh;
+  min-height: 600px;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+/* 輪播指示器 - 向上移動避免被篩選欄遮擋 */
+.carousel-indicators {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 15;
+}
 /* ========================================
    2. 快捷筛选栏
    ======================================== */
-.filter-card {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-  padding: 24px;
-}
-
 .filter-tabs {
   display: flex;
   gap: 4px;
@@ -706,10 +675,8 @@ section {
 }
 
 .quick-filter {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -50px;
+  position: relative;
+  margin-top: -40px;
   z-index: 20;
   padding: 0 20px;
 }
@@ -719,6 +686,13 @@ section {
   margin: 0 auto;
   width: 100%;
   padding: 0;
+}
+
+.filter-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  padding: 24px;
 }
 /* ========================================
    3. 数据看板
@@ -1113,12 +1087,13 @@ section {
    ======================================== */
 /* 桌面端 - 更大重疊 */
 @media (min-width: 769px) {
-  .quick-filter {
-    bottom: -70px;
+  .carousel-indicators {
+    bottom: 90px;
   }
 
   .carousel-indicators {
-    bottom: 110px;
+    /* bottom: 110px; */
+    bottom: 80px;
   }
 }
 
@@ -1254,7 +1229,7 @@ section {
   }
 
   .quick-filter {
-    bottom: -30px;
+    margin-top: -20px;
     padding: 0 16px;
   }
 
@@ -1263,7 +1238,7 @@ section {
   }
 
   .carousel-indicators {
-    bottom: 80px;
+    bottom: 60px;
   }
 }
 

@@ -172,7 +172,7 @@ import { usePropertyStore } from '@/stores/propertyStore'
 const themes = [
   { name: '默认（蓝色）', value: 'default' },
   { name: '暖色（橙色）', value: 'warm' },
-  { name: '深色', value: 'dark' },
+  // { name: '深色', value: 'dark' },
   { name: '森林', value: 'forest' },
 ]
 const wechatInput = ref(null)
@@ -314,6 +314,10 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.upload-area span {
+  cursor: pointer;
+}
+
 .settings-view {
   padding: 20px;
   max-width: 800px;
@@ -447,13 +451,13 @@ onMounted(async () => {
 }
 
 .btn-save {
-  background: #2c8bff;
+  background: var(--color-primary);
   color: white;
   flex: 1;
 }
 
 .btn-save:hover:not(:disabled) {
-  background: #0066cc;
+  background: var(--color-primary-dark);
 }
 
 .btn-save:disabled {
